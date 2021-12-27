@@ -6,6 +6,7 @@ use std::hash::Hash;
 ///
 /// This may contain multiple cards which are equal.
 #[derive(Clone, Eq, Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct CardDeck<C>
 where
     C: Eq + Hash,
