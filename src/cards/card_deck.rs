@@ -47,7 +47,10 @@ where
     }
 }
 
-impl<C> Extend<C> for CardDeck<C> where C: Eq + Hash {
+impl<C> Extend<C> for CardDeck<C>
+where
+    C: Eq + Hash,
+{
     fn extend<T: IntoIterator<Item = C>>(&mut self, cards: T) {
         for card in cards {
             self.add(card);
