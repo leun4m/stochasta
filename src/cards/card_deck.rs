@@ -18,7 +18,7 @@ where
     C: Eq + Hash + Default,
 {
     fn from(cards: Vec<C>) -> Self {
-        let mut deck = CardDeck::default();
+        let mut deck = CardDeck::new();
 
         for card in cards {
             deck.add(card.into());
@@ -36,7 +36,7 @@ where
     where
         T: std::iter::IntoIterator<Item = C>,
     {
-        let mut deck = CardDeck::default();
+        let mut deck = CardDeck::new();
 
         for card in cards {
             deck.add(card);
@@ -60,9 +60,7 @@ where
     C: Eq + Hash + Default,
 {
     fn default() -> Self {
-        Self {
-            cards: HashMap::new(),
-        }
+        CardDeck::new()
     }
 }
 
@@ -70,6 +68,12 @@ impl<C> CardDeck<C>
 where
     C: Eq + Hash,
 {
+    pub fn new() -> Self {
+        Self {
+            cards: HashMap::new(),
+        }
+    }
+
     /// Returns the number of cards in the deck
     pub fn size(&self) -> u64 {
         self.cards.iter().map(|x| x.1).sum()
@@ -102,7 +106,7 @@ where
     /// use stochasta::cards::CardDeck;
     ///
     /// let card = "demo";
-    /// let mut deck = CardDeck::default();
+    /// let mut deck = CardDeck::new();
     /// assert_eq!(deck.count(&card), 0);
     ///
     /// deck.add(card);
@@ -113,16 +117,55 @@ where
     }
 
     /// Adds the card `n` times to the deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let card = "demo";
+    /// let mut deck = CardDeck::new();
+    /// assert_eq!(deck.count(&card), 0);
+    ///
+    /// deck.add_times(card, 5);
+    /// assert_eq!(deck.count(&card), 5);
+    /// ```
     pub fn add_times(&mut self, card: C, n: u64) {
         *self.cards.entry(card).or_insert(0) += n;
     }
 
     /// Checks whether the card is contained at least once in the deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let card = "demo";
+    /// let mut deck = CardDeck::new();
+    /// assert_eq!(deck.contains(&card), false);
+    ///
+    /// deck.add(card);
+    /// assert_eq!(deck.contains(&card), true);
+    /// ```
     pub fn contains(&self, card: &C) -> bool {
         self.count(&card) > 0
     }
 
     /// Checks the amount of equal cards.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let card = "demo";
+    /// let mut deck = CardDeck::from(vec![1, 3, 3]);
+    ///
+    /// assert_eq!(deck.count(&1), 1);
+    /// assert_eq!(deck.count(&3), 2);
+    /// assert_eq!(deck.count(&5), 0);
+    /// ```
     pub fn count(&self, card: &C) -> u64 {
         self.cards.get(card).copied().unwrap_or_default()
     }
