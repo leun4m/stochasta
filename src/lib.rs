@@ -3,7 +3,7 @@
 //! # Example
 //!
 //! ```
-//! use stochasta::cards::CardDeck;
+//! use stochasta::CardDeck;
 //! use stochasta::Probability;
 //!
 //! let coin = CardDeck::from(vec!["head", "tails"]);
@@ -13,7 +13,9 @@
 //! assert_eq!(coin.probability(&"tails"), Probability::new(1, 2));
 //! ```
 
-pub mod cards;
+mod cards;
+
+pub use cards::card_deck::CardDeck;
 
 use num_rational::Ratio;
 
@@ -23,12 +25,12 @@ pub type Probability = Ratio<u64>;
 #[cfg(test)]
 mod tests {
 
-    use crate::cards;
+    use crate::CardDeck;
     use crate::Probability;
 
     #[test]
     fn coin_toss_works() {
-        let coin = cards::CardDeck::from(vec!["Head", "Tails"]);
+        let coin = CardDeck::from(vec!["Head", "Tails"]);
         assert_eq!(coin.size(), 2);
         assert_eq!(coin.probability(&"Head"), Probability::new(1, 2));
         assert_eq!(coin.probability(&"Tails"), Probability::new(1, 2));
@@ -37,7 +39,7 @@ mod tests {
 
     #[test]
     fn uneven_dice_works() {
-        let coin = cards::CardDeck::from(vec!["1", "2", "3", "4", "5", "1"]);
+        let coin = CardDeck::from(vec!["1", "2", "3", "4", "5", "1"]);
 
         assert_eq!(coin.size(), 6);
         assert_eq!(coin.probability(&"1"), Probability::new(1, 3));

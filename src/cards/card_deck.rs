@@ -5,6 +5,23 @@ use std::hash::Hash;
 /// A deck of cards.
 ///
 /// This may contain multiple cards which are equal.
+/// 
+/// # Example: Uneven dice
+///
+/// The following code shows how to construct an uneven dice with a second one instead of a six.
+///
+/// ```
+/// use stochasta::cards::CardDeck;
+/// use stochasta::Probability;
+///
+/// let dice = CardDeck::from(vec!["1", "2", "3", "4", "5", "1"]);
+///
+/// assert_eq!(dice.size(), 6);
+/// assert_eq!(dice.probability(&"1"), Probability::new(1, 3));
+/// assert_eq!(dice.probability(&"2"), Probability::new(1, 6));
+/// assert_eq!(dice.probability(&"5"), Probability::new(1, 6));
+/// assert_eq!(dice.probability(&"6"), Probability::new(0, 6));
+/// ```
 #[derive(Clone, Eq, Debug)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct CardDeck<C>
@@ -85,7 +102,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let cards: CardDeck<i32> = CardDeck::new();
     /// assert_eq!(cards.is_empty(), true);
@@ -101,7 +118,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let card = "demo";
     /// let mut deck = CardDeck::new();
@@ -119,7 +136,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let card = "demo";
     /// let mut deck = CardDeck::new();
@@ -137,7 +154,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let mut deck = CardDeck::from(vec![1, 3, 3]);
     /// assert_eq!(deck.count(&3), 2);
@@ -156,7 +173,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let mut deck = CardDeck::from(vec![3, 3, 3]);
     /// assert_eq!(deck.count(&3), 3);
@@ -178,7 +195,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let mut deck = CardDeck::new();
     /// assert_eq!(deck.count(&"alpha"), 0);
@@ -195,7 +212,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let cards: CardDeck<i32> = CardDeck::new();
     /// // ...
@@ -210,7 +227,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let weird_dice = CardDeck::from(vec![1, 2, 1]);
     /// assert_eq!(weird_dice.size(), 3);
@@ -225,7 +242,7 @@ where
     ///
     /// ```
     /// use stochasta::Probability;
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let dice = CardDeck::from(vec!["1", "2", "3", "4", "5", "6"]);
     /// assert_eq!(dice.probability(&"1"), Probability::new(1, 6));
@@ -245,7 +262,7 @@ where
     /// ```
     /// use std::collections::HashMap;
     /// use stochasta::Probability;
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let coin = CardDeck::from(vec!["head", "tails"]);
     /// assert_eq!(
@@ -269,7 +286,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let card = "demo";
     /// let mut deck = CardDeck::new();
@@ -287,7 +304,7 @@ where
     /// # Example
     ///
     /// ```
-    /// use stochasta::cards::CardDeck;
+    /// use stochasta::CardDeck;
     ///
     /// let card = "demo";
     /// let mut deck = CardDeck::from(vec![1, 3, 3]);
