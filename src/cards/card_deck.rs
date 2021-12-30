@@ -11,7 +11,7 @@ use std::hash::Hash;
 /// The following code shows how to construct an uneven dice with a second one instead of a six.
 ///
 /// ```
-/// use stochasta::cards::CardDeck;
+/// use stochasta::CardDeck;
 /// use stochasta::Probability;
 ///
 /// let dice = CardDeck::from(vec!["1", "2", "3", "4", "5", "1"]);
