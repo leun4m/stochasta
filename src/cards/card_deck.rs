@@ -132,6 +132,47 @@ where
         *self.cards.entry(card).or_insert(0) += n;
     }
 
+    /// Removes all appearences of the given card from the deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let mut deck = CardDeck::from(vec![1, 3, 3]);
+    /// assert_eq!(deck.count(&3), 2);
+    ///
+    /// deck.remove_all(&3);
+    /// assert_eq!(deck.count(&3), 0);
+    /// ```
+    pub fn remove_all(&mut self, card: &C) {
+        self.cards.remove(card);
+    }
+
+    /// Removes the card `n` times from the deck.
+    ///
+    /// If `n` is greater than [count](CardDeck::count) the amount will simply set to zero.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let mut deck = CardDeck::from(vec![3, 3, 3]);
+    /// assert_eq!(deck.count(&3), 3);
+    ///
+    /// deck.remove_times(3, 2);
+    /// assert_eq!(deck.count(&3), 1);
+    /// ```
+    pub fn remove_times(&mut self, card: C, n: u64) {
+        let value = self.cards.entry(card).or_insert(0);
+        if *value >= n {
+            *value -= n;
+        } else {
+            *value = 0;
+        }
+    }
+
     /// Returns `true`, if the deck is empty.
     ///
     /// # Example
