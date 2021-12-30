@@ -5,7 +5,7 @@ This is `stochasta`. A (hopefully) simple stochastic analysis library.
 ## Example
 
 ```rust
-use stochasta::cards::CardDeck;
+use stochasta::CardDeck;
 use stochasta::Probability;
 
 let coin = CardDeck::from(vec!["head", "tails"]);
