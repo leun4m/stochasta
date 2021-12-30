@@ -173,6 +173,23 @@ where
         }
     }
 
+    /// Sets the amount of `card`s to `n. Will overwrite any pre-existing value.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let mut deck = CardDeck::new();
+    /// assert_eq!(deck.count(&"alpha"), 0);
+    ///
+    /// deck.set_card("alpha", 10);
+    /// assert_eq!(deck.count(&"alpha"), 10);
+    /// ```
+    pub fn set_card(&mut self, card: C, n: u64) {
+        self.cards.insert(card, n);
+    }
+
     /// Returns `true`, if the deck is empty.
     ///
     /// # Example
