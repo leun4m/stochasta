@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] (2021-12-30)
+
+### Fixed
+
+- `CardDeck<C>` documentation
+
 ## [0.2.0] (2021-12-30)
 
 ### Added
