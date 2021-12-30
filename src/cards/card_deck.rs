@@ -80,13 +80,47 @@ impl<C> CardDeck<C>
 where
     C: Eq + Hash,
 {
+    /// Creates a new empty deck.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    /// 
+    /// let cards: CardDeck<i32> = CardDeck::new();
+    /// assert_eq!(cards.is_empty(), true);
+    /// ```
     pub fn new() -> Self {
         Self {
             cards: HashMap::new(),
         }
     }
 
-    /// Returns the number of cards in the deck
+    /// Returns `true`, if the deck is empty.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    /// 
+    /// let cards: CardDeck<i32> = CardDeck::new();
+    /// // ...
+    /// assert_eq!(cards.is_empty(), cards.size() == 0);
+    /// ```
+    pub fn is_empty(&self) -> bool {
+        self.cards.is_empty()
+    }
+
+    /// Returns the number of cards in the deck.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    /// 
+    /// let weird_dice = CardDeck::from(vec![1, 2, 1]);
+    /// assert_eq!(weird_dice.size(), 3);
+    /// ```
     pub fn size(&self) -> u64 {
         self.cards.iter().map(|x| x.1).sum()
     }
@@ -108,6 +142,32 @@ where
         } else {
             Probability::new(0, 1)
         }
+    }
+
+    /// Returns the probability of the cards to be drawn.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::collections::HashMap;
+    /// use stochasta::Probability;
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let coin = CardDeck::from(vec!["head", "tails"]);
+    /// assert_eq!(
+    ///     coin.probabilities(),
+    ///     HashMap::from([
+    ///         (&"head",  Probability::new(1, 2)),
+    ///         (&"tails", Probability::new(1, 2))
+    ///     ])
+    /// );
+    /// ```
+    pub fn probabilities(&self) -> HashMap<&C, Probability> {
+        let size = self.size();
+        self.cards
+            .iter()
+            .map(|(card, count)| (card, Probability::new(*count, size)))
+            .collect()
     }
 
     /// Adds the given card once to the deck.
