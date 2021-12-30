@@ -81,12 +81,12 @@ where
     C: Eq + Hash,
 {
     /// Creates a new empty deck.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::cards::CardDeck;
-    /// 
+    ///
     /// let cards: CardDeck<i32> = CardDeck::new();
     /// assert_eq!(cards.is_empty(), true);
     /// ```
@@ -96,13 +96,49 @@ where
         }
     }
 
-    /// Returns `true`, if the deck is empty.
-    /// 
+    /// Adds the given card once to the deck.
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::cards::CardDeck;
-    /// 
+    ///
+    /// let card = "demo";
+    /// let mut deck = CardDeck::new();
+    /// assert_eq!(deck.count(&card), 0);
+    ///
+    /// deck.add(card);
+    /// assert_eq!(deck.count(&card), 1);
+    /// ```
+    pub fn add(&mut self, card: C) {
+        self.add_times(card, 1);
+    }
+
+    /// Adds the card `n` times to the deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
+    /// let card = "demo";
+    /// let mut deck = CardDeck::new();
+    /// assert_eq!(deck.count(&card), 0);
+    ///
+    /// deck.add_times(card, 5);
+    /// assert_eq!(deck.count(&card), 5);
+    /// ```
+    pub fn add_times(&mut self, card: C, n: u64) {
+        *self.cards.entry(card).or_insert(0) += n;
+    }
+
+    /// Returns `true`, if the deck is empty.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::cards::CardDeck;
+    ///
     /// let cards: CardDeck<i32> = CardDeck::new();
     /// // ...
     /// assert_eq!(cards.is_empty(), cards.size() == 0);
@@ -112,12 +148,12 @@ where
     }
 
     /// Returns the number of cards in the deck.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::cards::CardDeck;
-    /// 
+    ///
     /// let weird_dice = CardDeck::from(vec![1, 2, 1]);
     /// assert_eq!(weird_dice.size(), 3);
     /// ```
@@ -168,42 +204,6 @@ where
             .iter()
             .map(|(card, count)| (card, Probability::new(*count, size)))
             .collect()
-    }
-
-    /// Adds the given card once to the deck.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use stochasta::cards::CardDeck;
-    ///
-    /// let card = "demo";
-    /// let mut deck = CardDeck::new();
-    /// assert_eq!(deck.count(&card), 0);
-    ///
-    /// deck.add(card);
-    /// assert_eq!(deck.count(&card), 1);
-    /// ```
-    pub fn add(&mut self, card: C) {
-        self.add_times(card, 1);
-    }
-
-    /// Adds the card `n` times to the deck.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use stochasta::cards::CardDeck;
-    ///
-    /// let card = "demo";
-    /// let mut deck = CardDeck::new();
-    /// assert_eq!(deck.count(&card), 0);
-    ///
-    /// deck.add_times(card, 5);
-    /// assert_eq!(deck.count(&card), 5);
-    /// ```
-    pub fn add_times(&mut self, card: C, n: u64) {
-        *self.cards.entry(card).or_insert(0) += n;
     }
 
     /// Checks whether the card is contained at least once in the deck.
