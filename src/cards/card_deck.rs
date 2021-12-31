@@ -23,7 +23,7 @@ use std::hash::Hash;
 /// assert_eq!(dice.probability(&"6"), Probability::new(0, 6));
 /// ```
 #[derive(Clone, Eq, Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDeck<C>
 where
     C: Eq + Hash,
