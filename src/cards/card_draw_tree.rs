@@ -103,6 +103,24 @@ where
     }
 
     /// Returns the probability of a certain sequence in the tree.
+    ///
+    /// The order is important as well as the position - the first entry will be searched among the
+    /// root nodes.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::{CardDeck, CardDrawTree, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
+    ///
+    /// let odd_coin = CardDeck::from(vec!["H", "T"]);
+    /// let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
+    ///
+    /// assert_eq!(tree.probability_of(&[]), PROBABILITY_ONE);
+    /// assert_eq!(tree.probability_of(&["H"]), Probability::new(1, 2));
+    /// assert_eq!(tree.probability_of(&["H", "H"]), Probability::new(1, 4));
+    /// // 3x head is impossible when only throwing 2x
+    /// assert_eq!(tree.probability_of(&["H", "H", "H"]), PROBABILITY_ZERO);
+    /// ```
     #[must_use]
     pub fn probability_of(&self, sequence: &[C]) -> Probability {
         if sequence.is_empty() {
