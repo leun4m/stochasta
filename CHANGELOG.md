@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `CardDrawTree<C>` as a representation of a card drawing process with methods
+    - to create an empty one
+    - a single and multilayered one from `CardDeck<C>` (without deck shrinking)
+    - to create a [Graphviz](https://www.graphviz.org/) representation
+
+### Fixed
+
+- Serde-Serialization works with `CardDeck<C>`
+
 ## [0.2.2] (2021-21-31)
 
 ### Added
