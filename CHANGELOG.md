@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.2] (2021-21-31)
+
+### Added
+
+- Constants: `PROBABILITY_ZERO`, `PROBABILITY_ONE`
+
+### Changed
+
+- Read-only `CardDeck<C>` methods got the `#[must_use]` attribute
+
 ## [0.2.1] (2021-12-30)
 
 ### Fixed
