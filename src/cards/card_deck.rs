@@ -5,7 +5,7 @@ use std::hash::Hash;
 /// A deck of cards.
 ///
 /// This may contain multiple cards which are equal.
-/// 
+///
 /// # Example: Uneven dice
 ///
 /// The following code shows how to construct an uneven dice with a second one instead of a six.
@@ -36,10 +36,10 @@ where
     C: Eq + Hash + Default,
 {
     fn from(cards: Vec<C>) -> Self {
-        let mut deck = CardDeck::new();
+        let mut deck = Self::new();
 
         for card in cards {
-            deck.add(card.into());
+            deck.add(card);
         }
 
         deck
@@ -54,7 +54,7 @@ where
     where
         T: std::iter::IntoIterator<Item = C>,
     {
-        let mut deck = CardDeck::new();
+        let mut deck = Self::new();
 
         for card in cards {
             deck.add(card);
@@ -89,7 +89,7 @@ where
     C: Eq + Hash + Default,
 {
     fn default() -> Self {
-        CardDeck::new()
+        Self::new()
     }
 }
 
@@ -107,6 +107,7 @@ where
     /// let cards: CardDeck<i32> = CardDeck::new();
     /// assert_eq!(cards.is_empty(), true);
     /// ```
+    #[must_use]
     pub fn new() -> Self {
         Self {
             cards: HashMap::new(),
@@ -190,7 +191,7 @@ where
         }
     }
 
-    /// Sets the amount of `card`s to `n. Will overwrite any pre-existing value.
+    /// Sets the amount of `card`s to `n`. Will overwrite any pre-existing value.
     ///
     /// # Example
     ///
@@ -218,6 +219,7 @@ where
     /// // ...
     /// assert_eq!(cards.is_empty(), cards.size() == 0);
     /// ```
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.cards.is_empty()
     }
@@ -232,6 +234,7 @@ where
     /// let weird_dice = CardDeck::from(vec![1, 2, 1]);
     /// assert_eq!(weird_dice.size(), 3);
     /// ```
+    #[must_use]
     pub fn size(&self) -> u64 {
         self.cards.iter().map(|x| x.1).sum()
     }
@@ -247,12 +250,12 @@ where
     /// let dice = CardDeck::from(vec!["1", "2", "3", "4", "5", "6"]);
     /// assert_eq!(dice.probability(&"1"), Probability::new(1, 6));
     /// ```
+    #[must_use]
     pub fn probability(&self, card: &C) -> Probability {
-        if let Some(count) = self.cards.get(card) {
-            Probability::new(*count, self.size())
-        } else {
-            Probability::new(0, 1)
-        }
+        self.cards.get(card).map_or_else(
+            || Probability::new(0, 1),
+            |count| Probability::new(*count, self.size()),
+        )
     }
 
     /// Returns the probability of the cards to be drawn.
@@ -273,6 +276,7 @@ where
     ///     ])
     /// );
     /// ```
+    #[must_use]
     pub fn probabilities(&self) -> HashMap<&C, Probability> {
         let size = self.size();
         self.cards
@@ -295,8 +299,9 @@ where
     /// deck.add(card);
     /// assert_eq!(deck.contains(&card), true);
     /// ```
+    #[must_use]
     pub fn contains(&self, card: &C) -> bool {
-        self.count(&card) > 0
+        self.count(card) > 0
     }
 
     /// Checks the amount of equal cards.
@@ -313,6 +318,7 @@ where
     /// assert_eq!(deck.count(&3), 2);
     /// assert_eq!(deck.count(&5), 0);
     /// ```
+    #[must_use]
     pub fn count(&self, card: &C) -> u64 {
         self.cards.get(card).copied().unwrap_or_default()
     }
