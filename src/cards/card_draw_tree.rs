@@ -2,7 +2,7 @@ use crate::{CardDeck, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Eq, Debug)]
 pub struct CardDrawTree<C>
 where
     C: Eq + Hash,
@@ -22,6 +22,17 @@ where
             probability_in_tree: PROBABILITY_ONE,
             nodes: Box::default(),
         }
+    }
+}
+
+impl<C> PartialEq for CardDrawTree<C>
+where
+    C: Eq + Hash,
+{
+    fn eq(&self, rhs: &Self) -> bool {
+        self.probability == rhs.probability
+            && self.probability_in_tree == rhs.probability_in_tree
+            && self.nodes == rhs.nodes
     }
 }
 
@@ -59,22 +70,27 @@ where
         tree
     }
 
-    pub fn without_drawing(card_deck: &CardDeck<C>, draws: u32) -> Self {
-        Self::without_drawing_root_probality(card_deck, draws, PROBABILITY_ONE, PROBABILITY_ONE)
+    /// Creates a new tree with the number of `draws` with an unshrinking stack.
+    ///
+    /// The stack won't shrink from drawing cards;
+    /// instead every drawn card is put back to the stack.
+    #[must_use]
+    pub fn without_shrinking(card_deck: &CardDeck<C>, draws: u32) -> Self {
+        Self::without_shrinking_root_probability(card_deck, draws, PROBABILITY_ONE, PROBABILITY_ONE)
     }
 
-    fn without_drawing_root_probality(
+    fn without_shrinking_root_probability(
         card_deck: &CardDeck<C>,
         draws: u32,
         probability: Probability,
-        partent_probability: Probability,
+        parent_probability: Probability,
     ) -> Self {
-        let mut tree = Self::new(probability, partent_probability);
+        let mut tree = Self::new(probability, parent_probability);
         if 0 < draws {
             for (card, card_probability) in card_deck.probabilities() {
                 tree.nodes.insert(
                     card.clone(),
-                    Self::without_drawing_root_probality(
+                    Self::without_shrinking_root_probability(
                         card_deck,
                         draws - 1,
                         card_probability,
@@ -100,6 +116,59 @@ where
 }
 
 impl CardDrawTree<&str> {
+    /// Creates a [Graphviz](https://www.graphviz.org/)-graph from the decision tree.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// use stochasta::{CardDeck, CardDrawTree};
+    ///
+    /// let odd_coin = CardDeck::from(vec!["H", "H", "T"]);
+    /// let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
+    /// let output = r#"digraph {
+    /// root[label="", shape="circle"];
+    /// root->H_2[label="2/3"];
+    /// H_2[label="H (2/3)"];
+    /// H_2->H_3[label="2/3"];
+    /// H_3[label="H (4/9)"];
+    /// H_2->T_4[label="1/3"];
+    /// T_4[label="T (2/9)"];
+    /// root->T_5[label="1/3"];
+    /// T_5[label="T (1/3)"];
+    /// T_5->H_6[label="2/3"];
+    /// H_6[label="H (2/9)"];
+    /// T_5->T_7[label="1/3"];
+    /// T_7[label="T (1/9)"];
+    /// }"#;
+    /// assert_eq!(tree.to_graphviz(), output);
+    /// ```
+    ///
+    /// # ASCII Visualisation
+    ///
+    /// This will result in the following graph (here sideways for better visualisation):
+    ///
+    /// ```plain
+    ///                         2/3
+    ///                       +-----[ H (4/9) ]
+    ///       2/3            /
+    ///     +-----[ H (2/3) ]
+    ///    /                 \  1/3
+    ///   /                   +-----[ T (2/9) ]
+    ///  /
+    /// O
+    ///  \                      2/3
+    ///   \                   +-----[ H (2/9) ]
+    ///    \  1/3            /
+    ///     +-----[ T (1/3) ]
+    ///                      \  1/3
+    ///                       +-----[ T (1/9) ]
+    ///```
+    ///
+    /// # Output
+    ///
+    /// - the paths have the probability from their parent node
+    /// - the cards have additionally the total probability to reach it from the root node in
+    ///   brackets
     pub fn to_graphviz(&self) -> String {
         let mut result = String::from("digraph {\n");
 
@@ -165,9 +234,19 @@ mod tests {
     }
 
     #[test]
+    fn to_graphviz_empty() {
+        let deck = CardDeck::new();
+        let tree = CardDrawTree::without_shrinking(&deck, 1);
+        let output = r#"digraph {
+root[label="", shape="circle"];
+}"#;
+        assert_eq!(tree.to_graphviz(), output);
+    }
+
+    #[test]
     fn to_graphviz() {
-        let coin = CardDeck::from(vec!["head", "head", "tails"]);
-        let tree = CardDrawTree::without_drawing(&coin, 2);
+        let odd_coin = CardDeck::from(vec!["head", "head", "tails"]);
+        let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
         let output = r#"digraph {
 root[label="", shape="circle"];
 root->head_2[label="2/3"];
