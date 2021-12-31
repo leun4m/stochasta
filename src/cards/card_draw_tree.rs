@@ -8,6 +8,7 @@ where
     C: Eq + Hash,
 {
     probability: Probability,
+    probability_in_tree: Probability,
     nodes: Box<HashMap<C, CardDrawTree<C>>>,
 }
 
@@ -18,6 +19,7 @@ where
     fn default() -> Self {
         Self {
             probability: PROBABILITY_ONE,
+            probability_in_tree: PROBABILITY_ONE,
             nodes: Box::default(),
         }
     }
@@ -29,9 +31,10 @@ where
 {
     /// Creates a new empty tree.
     #[must_use]
-    pub fn new(probability: Probability) -> Self {
+    pub fn new(probability: Probability, parent_proability: Probability) -> Self {
         Self {
             probability,
+            probability_in_tree: parent_proability * probability,
             nodes: Box::new(HashMap::<C, CardDrawTree<C>>::new()),
         }
     }
@@ -48,28 +51,35 @@ where
     /// ```
     #[must_use]
     pub fn create_from(card_deck: &CardDeck<C>) -> Self {
-        let mut tree = Self::new(PROBABILITY_ONE);
+        let mut tree = Self::new(PROBABILITY_ONE, PROBABILITY_ONE);
         for (card, probability) in card_deck.probabilities() {
-            tree.nodes.insert(card.clone(), Self::new(probability));
+            tree.nodes
+                .insert(card.clone(), Self::new(probability, PROBABILITY_ONE));
         }
         tree
     }
 
     pub fn without_drawing(card_deck: &CardDeck<C>, draws: u32) -> Self {
-        Self::without_drawing_root_probality(card_deck, draws, PROBABILITY_ONE)
+        Self::without_drawing_root_probality(card_deck, draws, PROBABILITY_ONE, PROBABILITY_ONE)
     }
 
     fn without_drawing_root_probality(
         card_deck: &CardDeck<C>,
         draws: u32,
         probability: Probability,
+        partent_probability: Probability,
     ) -> Self {
-        let mut tree = Self::new(probability);
+        let mut tree = Self::new(probability, partent_probability);
         if 0 < draws {
             for (card, card_probability) in card_deck.probabilities() {
                 tree.nodes.insert(
                     card.clone(),
-                    Self::without_drawing_root_probality(card_deck, draws - 1, card_probability),
+                    Self::without_drawing_root_probality(
+                        card_deck,
+                        draws - 1,
+                        card_probability,
+                        probability,
+                    ),
                 );
             }
         }
@@ -110,7 +120,10 @@ impl CardDrawTree<&str> {
             "{}->{}[label=\"{}\"];\n",
             root, new_root, self.probability
         ));
-        result.push_str(&format!("{}[label=\"{}\"];\n", new_root, card));
+        result.push_str(&format!(
+            "{}[label=\"{} ({})\"];\n",
+            new_root, card, self.probability_in_tree
+        ));
 
         let (subtree, new_id) = self.to_graphviz_iter(&new_root, id);
         result.push_str(&subtree);
@@ -155,22 +168,21 @@ mod tests {
     fn to_graphviz() {
         let coin = CardDeck::from(vec!["head", "head", "tails"]);
         let tree = CardDrawTree::without_drawing(&coin, 2);
-        let output = r#"
-digraph {
+        let output = r#"digraph {
 root[label="", shape="circle"];
 root->head_2[label="2/3"];
-head_2[label="head"];
+head_2[label="head (2/3)"];
 head_2->head_3[label="2/3"];
-head_3[label="head"];
+head_3[label="head (4/9)"];
 head_2->tails_4[label="1/3"];
-tails_4[label="tails"];
+tails_4[label="tails (2/9)"];
 root->tails_5[label="1/3"];
-tails_5[label="tails"];
+tails_5[label="tails (1/3)"];
 tails_5->head_6[label="2/3"];
-head_6[label="head"];
+head_6[label="head (2/9)"];
 tails_5->tails_7[label="1/3"];
-tails_7[label="tails"];
+tails_7[label="tails (1/9)"];
 }"#;
-        assert_eq!(tree.to_graphviz(), output.trim());
+        assert_eq!(tree.to_graphviz(), output);
     }
 }
