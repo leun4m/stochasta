@@ -22,11 +22,22 @@ use num_rational::Ratio;
 /// The probability of a certain event
 pub type Probability = Ratio<u64>;
 
+/// A probability of 0%.
+///
+/// An event with the same probability must never occur.
+pub const PROBABILITY_ZERO: Probability = Probability::new_raw(0, 1);
+
+/// A probability of 100%.
+///
+/// An event with the same probability must occur.
+pub const PROBABILITY_ONE: Probability = Probability::new_raw(1, 1);
+
 #[cfg(test)]
 mod tests {
 
     use crate::CardDeck;
     use crate::Probability;
+    use crate::PROBABILITY_ZERO;
 
     #[test]
     fn coin_toss_works() {
@@ -45,6 +56,6 @@ mod tests {
         assert_eq!(coin.probability(&"1"), Probability::new(1, 3));
         assert_eq!(coin.probability(&"2"), Probability::new(1, 6));
         assert_eq!(coin.probability(&"5"), Probability::new(1, 6));
-        assert_eq!(coin.probability(&"6"), Probability::new(0, 6));
+        assert_eq!(coin.probability(&"6"), PROBABILITY_ZERO);
     }
 }

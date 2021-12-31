@@ -1,4 +1,4 @@
-use crate::Probability;
+use crate::{Probability, PROBABILITY_ZERO};
 use std::collections::HashMap;
 use std::hash::Hash;
 
@@ -253,7 +253,7 @@ where
     #[must_use]
     pub fn probability(&self, card: &C) -> Probability {
         self.cards.get(card).map_or_else(
-            || Probability::new(0, 1),
+            || PROBABILITY_ZERO,
             |count| Probability::new(*count, self.size()),
         )
     }
