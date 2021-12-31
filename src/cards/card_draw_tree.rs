@@ -1,7 +1,8 @@
+use crate::{CardDeck, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
+use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
-use crate::{CardDeck, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
-
+#[derive(Clone, Debug)]
 pub struct CardDrawTree<C>
 where
     C: Eq + Hash,
@@ -43,13 +44,34 @@ where
     /// use stochasta::{CardDeck, CardDrawTree};
     ///
     /// let deck = CardDeck::from(vec!["head", "tails"]);
-    /// let tree = CardDrawTree::create_from(deck);
+    /// let tree = CardDrawTree::create_from(&deck);
     /// ```
     #[must_use]
     pub fn create_from(card_deck: &CardDeck<C>) -> Self {
         let mut tree = Self::new(PROBABILITY_ONE);
         for (card, probability) in card_deck.probabilities() {
             tree.nodes.insert(card.clone(), Self::new(probability));
+        }
+        tree
+    }
+
+    pub fn without_drawing(card_deck: &CardDeck<C>, draws: u32) -> Self {
+        Self::without_drawing_root_probality(card_deck, draws, PROBABILITY_ONE)
+    }
+
+    fn without_drawing_root_probality(
+        card_deck: &CardDeck<C>,
+        draws: u32,
+        probability: Probability,
+    ) -> Self {
+        let mut tree = Self::new(probability);
+        if 0 < draws {
+            for (card, card_probability) in card_deck.probabilities() {
+                tree.nodes.insert(
+                    card.clone(),
+                    Self::without_drawing_root_probality(card_deck, draws - 1, card_probability),
+                );
+            }
         }
         tree
     }
@@ -64,6 +86,47 @@ where
         } else {
             PROBABILITY_ZERO
         }
+    }
+}
+
+impl CardDrawTree<&str> {
+    pub fn to_graphviz(&self) -> String {
+        let mut result = String::from("digraph {\n");
+
+        let root = "root";
+        result.push_str(&format!("{}[label=\"\", shape=\"circle\"];\n", root));
+
+        let (subtree, _) = self.to_graphviz_iter(root, 1);
+        result.push_str(&subtree);
+
+        result.push('}');
+        result
+    }
+
+    fn to_graphviz_sub(&self, root: &str, card: &str, id: u32) -> (String, u32) {
+        let mut result = String::new();
+        let new_root = format!("{}_{}", card, id);
+        result.push_str(&format!(
+            "{}->{}[label=\"{}\"];\n",
+            root, new_root, self.probability
+        ));
+        result.push_str(&format!("{}[label=\"{}\"];\n", new_root, card));
+
+        let (subtree, new_id) = self.to_graphviz_iter(&new_root, id);
+        result.push_str(&subtree);
+
+        (result, new_id)
+    }
+
+    fn to_graphviz_iter(&self, root: &str, id: u32) -> (String, u32) {
+        let mut result = String::new();
+        let mut new_id = id;
+        for (card, subtree) in self.nodes.iter().sorted_by_key(|&(c, _)| c) {
+            let (graphviz, last_id) = subtree.to_graphviz_sub(root, card, new_id + 1);
+            new_id = last_id;
+            result.push_str(&graphviz);
+        }
+        (result, new_id)
     }
 }
 
@@ -86,5 +149,28 @@ mod tests {
         assert_eq!(tree.probability_of(&["tails"]), Probability::new(1, 2));
         assert_eq!(tree.probability_of(&["side"]), PROBABILITY_ZERO);
         assert_eq!(tree.probability_of(&["head", "tails"]), PROBABILITY_ZERO);
+    }
+
+    #[test]
+    fn to_graphviz() {
+        let coin = CardDeck::from(vec!["head", "head", "tails"]);
+        let tree = CardDrawTree::without_drawing(&coin, 2);
+        let output = r#"
+digraph {
+root[label="", shape="circle"];
+root->head_2[label="2/3"];
+head_2[label="head"];
+head_2->head_3[label="2/3"];
+head_3[label="head"];
+head_2->tails_4[label="1/3"];
+tails_4[label="tails"];
+root->tails_5[label="1/3"];
+tails_5[label="tails"];
+tails_5->head_6[label="2/3"];
+head_6[label="head"];
+tails_5->tails_7[label="1/3"];
+tails_7[label="tails"];
+}"#;
+        assert_eq!(tree.to_graphviz(), output.trim());
     }
 }
