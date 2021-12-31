@@ -311,8 +311,7 @@ where
     /// ```
     /// use stochasta::CardDeck;
     ///
-    /// let card = "demo";
-    /// let mut deck = CardDeck::from(vec![1, 3, 3]);
+    /// let deck = CardDeck::from(vec![1, 3, 3]);
     ///
     /// assert_eq!(deck.count(&1), 1);
     /// assert_eq!(deck.count(&3), 2);
