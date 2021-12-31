@@ -117,9 +117,9 @@ where
 
 impl CardDrawTree<&str> {
     /// Creates a [Graphviz](https://www.graphviz.org/)-graph from the decision tree.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::{CardDeck, CardDrawTree};
     ///
@@ -169,6 +169,7 @@ impl CardDrawTree<&str> {
     /// - the paths have the probability from their parent node
     /// - the cards have additionally the total probability to reach it from the root node in
     ///   brackets
+    #[must_use]
     pub fn to_graphviz(&self) -> String {
         let mut result = String::from("digraph {\n");
 
