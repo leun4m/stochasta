@@ -73,7 +73,7 @@ where
     /// ```
     /// use stochasta::{CardDeck, CardDrawTree};
     ///
-    /// let deck = CardDeck::from(vec!["head", "tails"]);
+    /// let deck = CardDeck::from(vec!["heads", "tails"]);
     /// let tree = CardDrawTree::create_from(&deck);
     /// ```
     #[must_use]
@@ -134,7 +134,7 @@ where
     /// assert_eq!(tree.probability_of(&[]), PROBABILITY_ONE);
     /// assert_eq!(tree.probability_of(&["H"]), Probability::new(1, 2));
     /// assert_eq!(tree.probability_of(&["H", "H"]), Probability::new(1, 4));
-    /// // 3x head is impossible when only throwing 2x
+    /// // 3x heads is impossible when only throwing 2x
     /// assert_eq!(tree.probability_of(&["H", "H", "H"]), PROBABILITY_ZERO);
     /// ```
     #[must_use]
@@ -268,13 +268,13 @@ mod tests {
 
     #[test]
     fn probability_of_coin() {
-        let coin = CardDeck::from(vec!["head", "tails"]);
+        let coin = CardDeck::from(vec!["heads", "tails"]);
         let tree = CardDrawTree::create_from(&coin);
 
-        assert_eq!(tree.probability_of(&["head"]), Probability::new(1, 2));
+        assert_eq!(tree.probability_of(&["heads"]), Probability::new(1, 2));
         assert_eq!(tree.probability_of(&["tails"]), Probability::new(1, 2));
         assert_eq!(tree.probability_of(&["side"]), PROBABILITY_ZERO);
-        assert_eq!(tree.probability_of(&["head", "tails"]), PROBABILITY_ZERO);
+        assert_eq!(tree.probability_of(&["heads", "tails"]), PROBABILITY_ZERO);
     }
 
     #[test]

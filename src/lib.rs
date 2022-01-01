@@ -6,10 +6,10 @@
 //! use stochasta::CardDeck;
 //! use stochasta::Probability;
 //!
-//! let coin = CardDeck::from(vec!["head", "tails"]);
+//! let coin = CardDeck::from(vec!["heads", "tails"]);
 //!
 //! assert_eq!(coin.size(), 2);
-//! assert_eq!(coin.probability(&"head"), Probability::new(1, 2));
+//! assert_eq!(coin.probability(&"heads"), Probability::new(1, 2));
 //! assert_eq!(coin.probability(&"tails"), Probability::new(1, 2));
 //! ```
 
@@ -42,9 +42,9 @@ mod tests {
 
     #[test]
     fn coin_toss_works() {
-        let coin = CardDeck::from(vec!["Head", "Tails"]);
+        let coin = CardDeck::from(vec!["Heads", "Tails"]);
         assert_eq!(coin.size(), 2);
-        assert_eq!(coin.probability(&"Head"), Probability::new(1, 2));
+        assert_eq!(coin.probability(&"Heads"), Probability::new(1, 2));
         assert_eq!(coin.probability(&"Tails"), Probability::new(1, 2));
         assert_eq!(coin.probability(&"Edge"), Probability::from(0));
     }

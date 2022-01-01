@@ -267,12 +267,12 @@ where
     /// use stochasta::Probability;
     /// use stochasta::CardDeck;
     ///
-    /// let coin = CardDeck::from(vec!["head", "tails"]);
+    /// let coin = CardDeck::from(vec!["heads", "tails"]);
     /// assert_eq!(
     ///     coin.probabilities(),
     ///     HashMap::from([
-    ///         (&"head",  Probability::new(1, 2)),
-    ///         (&"tails", Probability::new(1, 2))
+    ///         (&"heads", Probability::new(1, 2)),
+    ///         (&"tails", Probability::new(1, 2)),
     ///     ])
     /// );
     /// ```
