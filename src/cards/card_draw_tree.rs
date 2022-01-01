@@ -90,9 +90,22 @@ where
     ///
     /// The stack won't shrink from drawing cards;
     /// instead every drawn card is put back to the stack.
+    /// 
+    /// For a shrinking deck, see [`Self::shrinking()`].
     #[must_use]
     pub fn without_shrinking(card_deck: &CardDeck<C>, draws: u32) -> Self {
         Self::without_shrinking_root_probability(card_deck, draws, PROBABILITY_ONE, PROBABILITY_ONE)
+    }
+
+    /// Creates a new tree with the number of `draws` with a shrinking stack.
+    ///
+    /// The stack will shrink from drawing cards;
+    /// once a card is drawn it is no langer part of the stack.
+    /// 
+    /// For a non-shrinking deck, see [`Self::without_shrinking()`].
+    #[must_use]
+    pub fn shrinking(card_deck: &CardDeck<C>, draws: u32) -> Self {
+        Self::shrinking_root_probability(card_deck, draws, PROBABILITY_ONE, PROBABILITY_ONE)
     }
 
     fn without_shrinking_root_probability(
@@ -108,6 +121,30 @@ where
                     card.clone(),
                     Self::without_shrinking_root_probability(
                         card_deck,
+                        draws - 1,
+                        card_probability,
+                        probability,
+                    ),
+                );
+            }
+        }
+        tree
+    }
+
+    fn shrinking_root_probability(
+        card_deck: &CardDeck<C>,
+        draws: u32,
+        probability: Probability,
+        parent_probability: Probability,
+    ) -> Self {
+        let mut tree = Self::new_node(probability, parent_probability);
+        if 0 < draws {
+            for (card, card_probability) in card_deck.probabilities() {
+                let new_stack = card_deck.draw(card.clone());
+                tree.nodes.insert(
+                    card.clone(),
+                    Self::without_shrinking_root_probability(
+                        &new_stack,
                         draws - 1,
                         card_probability,
                         probability,
@@ -286,4 +323,12 @@ root[label="", shape="circle"];
 }"#;
         assert_eq!(tree.to_graphviz(), output);
     }
+
+    #[test]
+    fn shrinking_empty() {
+        let deck: CardDeck<i32> = CardDeck::new();
+        let tree = CardDrawTree::shrinking(&deck, 1);
+        assert_eq!(tree.is_empty(), true);
+    }
+
 }

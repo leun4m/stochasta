@@ -5,6 +5,11 @@
 ### Added
 
 - `CardDeck<C>::draw(&self, C)`
+- `CardDrawTree<C>::shrinking(&self, u32)`
+
+### Changed
+
+- `CardDeck<C>::probabilities(&self)` - the probabilities are now guaranteed to be `> 0`.
 
 ## [0.3.0] (2022-01-01)
 
