@@ -2,6 +2,7 @@ use crate::{CardDeck, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
+/// A representation of a card drawing process.
 #[derive(Clone, Eq, Debug)]
 pub struct CardDrawTree<C>
 where
@@ -14,14 +15,10 @@ where
 
 impl<C> Default for CardDrawTree<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Clone,
 {
     fn default() -> Self {
-        Self {
-            probability: PROBABILITY_ONE,
-            probability_in_tree: PROBABILITY_ONE,
-            nodes: Box::default(),
-        }
+        Self::new()
     }
 }
 
@@ -41,11 +38,30 @@ where
     C: Eq + Hash + Clone,
 {
     /// Creates a new empty tree.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::CardDrawTree;
+    ///
+    /// let tree: CardDrawTree<i32> = CardDrawTree::new();
+    /// assert!(tree.is_empty());
+    /// ```
     #[must_use]
-    pub fn new(probability: Probability, parent_proability: Probability) -> Self {
+    pub fn new() -> Self {
+        Self {
+            probability: PROBABILITY_ONE,
+            probability_in_tree: PROBABILITY_ONE,
+            nodes: Box::default(),
+        }
+    }
+
+    /// Creates a new empty tree node.
+    #[must_use]
+    fn new_node(probability: Probability, parent_probability: Probability) -> Self {
         Self {
             probability,
-            probability_in_tree: parent_proability * probability,
+            probability_in_tree: parent_probability * probability,
             nodes: Box::new(HashMap::<C, CardDrawTree<C>>::new()),
         }
     }
@@ -62,10 +78,10 @@ where
     /// ```
     #[must_use]
     pub fn create_from(card_deck: &CardDeck<C>) -> Self {
-        let mut tree = Self::new(PROBABILITY_ONE, PROBABILITY_ONE);
+        let mut tree = Self::new_node(PROBABILITY_ONE, PROBABILITY_ONE);
         for (card, probability) in card_deck.probabilities() {
             tree.nodes
-                .insert(card.clone(), Self::new(probability, PROBABILITY_ONE));
+                .insert(card.clone(), Self::new_node(probability, PROBABILITY_ONE));
         }
         tree
     }
@@ -85,7 +101,7 @@ where
         probability: Probability,
         parent_probability: Probability,
     ) -> Self {
-        let mut tree = Self::new(probability, parent_probability);
+        let mut tree = Self::new_node(probability, parent_probability);
         if 0 < draws {
             for (card, card_probability) in card_deck.probabilities() {
                 tree.nodes.insert(
@@ -131,6 +147,12 @@ where
             PROBABILITY_ZERO
         }
     }
+
+    /// Returns `true` if the tree has no nodes.
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.nodes.is_empty()
+    }
 }
 
 impl CardDrawTree<&str> {
@@ -138,25 +160,28 @@ impl CardDrawTree<&str> {
     ///
     /// # Example
     ///
+    /// For a more interesting graph this example covers an oddly weighted coin where *heads* is
+    /// twice as likely to be thrown as *tails*.
+    ///
     /// ```
     /// use stochasta::{CardDeck, CardDrawTree};
     ///
-    /// let odd_coin = CardDeck::from(vec!["H", "H", "T"]);
+    /// let odd_coin = CardDeck::from(vec!["heads", "heads", "tails"]);
     /// let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
     /// let output = r#"digraph {
     /// root[label="", shape="circle"];
-    /// root->H_2[label="2/3"];
-    /// H_2[label="H (2/3)"];
-    /// H_2->H_3[label="2/3"];
-    /// H_3[label="H (4/9)"];
-    /// H_2->T_4[label="1/3"];
-    /// T_4[label="T (2/9)"];
-    /// root->T_5[label="1/3"];
-    /// T_5[label="T (1/3)"];
-    /// T_5->H_6[label="2/3"];
-    /// H_6[label="H (2/9)"];
-    /// T_5->T_7[label="1/3"];
-    /// T_7[label="T (1/9)"];
+    /// root->heads_2[label="2/3"];
+    /// heads_2[label="heads (2/3)"];
+    /// heads_2->heads_3[label="2/3"];
+    /// heads_3[label="heads (4/9)"];
+    /// heads_2->tails_4[label="1/3"];
+    /// tails_4[label="tails (2/9)"];
+    /// root->tails_5[label="1/3"];
+    /// tails_5[label="tails (1/3)"];
+    /// tails_5->heads_6[label="2/3"];
+    /// heads_6[label="heads (2/9)"];
+    /// tails_5->tails_7[label="1/3"];
+    /// tails_7[label="tails (1/9)"];
     /// }"#;
     /// assert_eq!(tree.to_graphviz(), output);
     /// ```
@@ -167,19 +192,19 @@ impl CardDrawTree<&str> {
     ///
     /// ```plain
     ///                         2/3
-    ///                       +-----[ H (4/9) ]
+    ///                       +-----[ heads (4/9) ]
     ///       2/3            /
-    ///     +-----[ H (2/3) ]
+    ///     +-----[ heads (2/3) ]
     ///    /                 \  1/3
-    ///   /                   +-----[ T (2/9) ]
+    ///   /                   +-----[ tails (2/9) ]
     ///  /
     /// O
     ///  \                      2/3
-    ///   \                   +-----[ H (2/9) ]
+    ///   \                   +-----[ heads (2/9) ]
     ///    \  1/3            /
-    ///     +-----[ T (1/3) ]
+    ///     +-----[ tails (1/3) ]
     ///                      \  1/3
-    ///                       +-----[ T (1/9) ]
+    ///                       +-----[ tails (1/9) ]
     ///```
     ///
     /// # Output
@@ -258,28 +283,6 @@ mod tests {
         let tree = CardDrawTree::without_shrinking(&deck, 1);
         let output = r#"digraph {
 root[label="", shape="circle"];
-}"#;
-        assert_eq!(tree.to_graphviz(), output);
-    }
-
-    #[test]
-    fn to_graphviz() {
-        let odd_coin = CardDeck::from(vec!["head", "head", "tails"]);
-        let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
-        let output = r#"digraph {
-root[label="", shape="circle"];
-root->head_2[label="2/3"];
-head_2[label="head (2/3)"];
-head_2->head_3[label="2/3"];
-head_3[label="head (4/9)"];
-head_2->tails_4[label="1/3"];
-tails_4[label="tails (2/9)"];
-root->tails_5[label="1/3"];
-tails_5[label="tails (1/3)"];
-tails_5->head_6[label="2/3"];
-head_6[label="head (2/9)"];
-tails_5->tails_7[label="1/3"];
-tails_7[label="tails (1/9)"];
 }"#;
         assert_eq!(tree.to_graphviz(), output);
     }
