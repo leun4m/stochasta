@@ -322,3 +322,31 @@ where
         self.cards.get(card).copied().unwrap_or_default()
     }
 }
+
+impl<C> CardDeck<C>
+where
+    C: Eq + Hash + Clone,
+{
+    /// Draws one exemplar of `card` from the deck and returns a **new** deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::CardDeck;
+    ///
+    /// let original = CardDeck::from(vec![1, 2, 3]);
+    ///
+    /// assert_eq!(original.contains(&3), true);
+    ///
+    /// let new_deck = original.draw(3);
+    ///
+    /// assert_eq!(original.contains(&3), true);
+    /// assert_eq!(new_deck.contains(&3), false);
+    /// ```
+    #[must_use]
+    pub fn draw(&self, card: C) -> Self {
+        let mut deck = (*self).clone();
+        deck.remove_times(card, 1);
+        deck
+    }
+}

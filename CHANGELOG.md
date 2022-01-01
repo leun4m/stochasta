@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED
+
+### Added
+
+- `CardDeck<C>::draw(&self, C)`
+
 ## [0.3.0] (2022-01-01)
 
 ### Added
