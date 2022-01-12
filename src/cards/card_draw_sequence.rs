@@ -1,8 +1,14 @@
-use crate::{Probability, PROBABILITY_ZERO};
+use crate::Probability;
 use std::hash::Hash;
 
 /// A representation of a sequence of drawn cards.
-#[derive(Clone, Eq, Debug)]
+///
+/// # Type Parameters
+/// - `C`: The type of a single card
+///
+/// # See also
+///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
+#[derive(Clone, Eq, Debug, Default)]
 pub struct CardDrawSequence<C>
 where
     C: Eq + Hash,
@@ -24,19 +30,28 @@ impl<C> CardDrawSequence<C>
 where
     C: Eq + Hash,
 {
-    pub fn empty() -> Self {
-        Self {cards: Vec::new(), probability: PROBABILITY_ZERO}
-    }
-
+    /// Creates a new `CardDrawSequence` with the given values.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::{CardDrawSequence, PROBABILITY_ONE};
+    ///
+    /// let sequence = CardDrawSequence::new(vec![1, 2, 3], PROBABILITY_ONE);
+    /// assert_eq!(sequence.cards(), &vec![1, 2, 3]);
+    /// assert_eq!(sequence.probability(), &PROBABILITY_ONE);
+    /// ```
     pub fn new(cards: Vec<C>, probability: Probability) -> Self {
         Self { cards, probability }
     }
 
-    pub fn append_card(&mut self, card: C) {
-        self.cards.push(card);
+    /// Returns the cards as they appear in their sequence.
+    pub fn cards(&self) -> &Vec<C> {
+        &self.cards
     }
 
-    pub fn set_probability(&mut self, probability: Probability) {
-        self.probability = probability;
+    /// Returns the probability of this sequence to appear.
+    pub fn probability(&self) -> &Probability {
+        &self.probability
     }
 }
