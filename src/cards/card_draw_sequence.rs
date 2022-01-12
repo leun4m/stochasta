@@ -1,4 +1,4 @@
-use crate::Probability;
+use crate::{Probability, PROBABILITY_ZERO};
 use std::hash::Hash;
 
 /// A representation of a sequence of drawn cards.
@@ -8,7 +8,7 @@ use std::hash::Hash;
 ///
 /// # See also
 ///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
-#[derive(Clone, Eq, Debug, Default)]
+#[derive(Clone, Eq, Debug)]
 pub struct CardDrawSequence<C>
 where
     C: Eq + Hash,
@@ -23,6 +23,18 @@ where
 {
     fn eq(&self, other: &Self) -> bool {
         self.cards == other.cards && self.probability == other.probability
+    }
+}
+
+impl<C> Default for CardDrawSequence<C>
+where
+    C: Eq + Hash,
+{
+    fn default() -> Self {
+        Self {
+            cards: Vec::default(),
+            probability: PROBABILITY_ZERO,
+        }
     }
 }
 

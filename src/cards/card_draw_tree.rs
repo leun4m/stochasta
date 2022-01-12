@@ -219,7 +219,10 @@ where
         let mut result = Vec::new();
 
         if self.is_empty() {
-            result.push(CardDrawSequence::new(Vec::from(sequence), self.probability_in_tree));
+            result.push(CardDrawSequence::new(
+                Vec::from(sequence),
+                self.probability_in_tree,
+            ));
         } else {
             for (card, tree) in self.nodes.iter() {
                 let mut s = Vec::new();
@@ -369,6 +372,6 @@ root[label="", shape="circle"];
     fn shrinking_empty() {
         let deck: CardDeck<i32> = CardDeck::new();
         let tree = CardDrawTree::shrinking(&deck, 1);
-        assert_eq!(tree.is_empty(), true);
+        assert!(tree.is_empty());
     }
 }
