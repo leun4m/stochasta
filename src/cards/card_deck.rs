@@ -150,7 +150,7 @@ where
         *self.cards.entry(card).or_insert(0) += n;
     }
 
-    /// Removes all appearences of the given card from the deck.
+    /// Removes all appearances of the given card from the deck.
     ///
     /// # Example
     ///
@@ -260,7 +260,7 @@ where
 
     /// Returns the probability of the cards to be drawn.
     ///
-    /// The probabilites are guaranteed to be `> 0`.
+    /// The probabilities are guaranteed to be `> 0`.
     /// 
     /// # Example
     ///

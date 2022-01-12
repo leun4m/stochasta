@@ -100,7 +100,7 @@ where
     /// Creates a new tree with the number of `draws` with a shrinking stack.
     ///
     /// The stack will shrink from drawing cards;
-    /// once a card is drawn it is no langer part of the stack.
+    /// once a card is drawn it is no longer part of the stack.
     /// 
     /// For a non-shrinking deck, see [`Self::without_shrinking()`].
     #[must_use]
