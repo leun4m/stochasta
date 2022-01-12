@@ -17,6 +17,7 @@ mod cards;
 
 pub use cards::card_deck::CardDeck;
 pub use cards::card_draw_tree::CardDrawTree;
+pub use cards::card_draw_sequence::CardDrawSequence;
 
 use num_rational::Ratio;
 
