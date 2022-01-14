@@ -392,5 +392,4 @@ root[label="", shape="circle"];
         assert_eq!(tree.probability_of(&[1, 2, 2]), Probability::new(1, 27));
         assert_eq!(tree.probability_of(&[1, 2, 3]), Probability::new(1, 27));
     }
-
 }

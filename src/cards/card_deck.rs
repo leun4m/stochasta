@@ -261,7 +261,7 @@ where
     /// Returns the probability of the cards to be drawn.
     ///
     /// The probabilities are guaranteed to be `> 0`.
-    /// 
+    ///
     /// # Example
     ///
     /// ```
@@ -354,14 +354,13 @@ where
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn probabilities_no_zero_returns() {
-        let mut deck = CardDeck::from(vec![1,2,3]);
+        let mut deck = CardDeck::from(vec![1, 2, 3]);
         deck.remove_times(3, 1);
         assert!(deck.probabilities().values().all(|&x| x > PROBABILITY_ZERO));
     }
