@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.1]
+
+### Changed
+
+- Removed unnecessary `Box`ing of `HashSet` in `CardDrawTree`
+
 ## [0.4.0] (2022-01-14)
 
 ### Added

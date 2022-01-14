@@ -13,7 +13,7 @@ where
 {
     probability: Probability,
     probability_in_tree: Probability,
-    nodes: Box<HashMap<C, CardDrawTree<C>>>,
+    nodes: HashMap<C, CardDrawTree<C>>,
 }
 
 impl<C> Default for CardDrawTree<C>
@@ -55,7 +55,7 @@ where
         Self {
             probability: PROBABILITY_ONE,
             probability_in_tree: PROBABILITY_ONE,
-            nodes: Box::default(),
+            nodes: HashMap::new(),
         }
     }
 
@@ -65,7 +65,7 @@ where
         Self {
             probability,
             probability_in_tree: parent_probability * probability,
-            nodes: Box::new(HashMap::<C, CardDrawTree<C>>::new()),
+            nodes: HashMap::<C, CardDrawTree<C>>::new(),
         }
     }
 
