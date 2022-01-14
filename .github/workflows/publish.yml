@@ -8,9 +8,10 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  call-workflow-1:
+  test:
     uses: leun4m/stochasta/.github/workflows/test.yml@main
   publish:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
