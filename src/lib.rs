@@ -13,6 +13,8 @@
 //! assert_eq!(coin.probability(&"tails"), Probability::new(1, 2));
 //! ```
 
+#![deny(missing_docs, unused_imports)]
+
 mod cards;
 
 pub use cards::card_deck::CardDeck;
