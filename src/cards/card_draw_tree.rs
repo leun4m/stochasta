@@ -143,7 +143,7 @@ where
                 let new_stack = card_deck.draw(card.clone());
                 tree.nodes.insert(
                     card.clone(),
-                    Self::without_shrinking_root_probability(
+                    Self::shrinking_root_probability(
                         &new_stack,
                         draws - 1,
                         card_probability,
@@ -329,6 +329,24 @@ root[label="", shape="circle"];
         let deck: CardDeck<i32> = CardDeck::new();
         let tree = CardDrawTree::shrinking(&deck, 1);
         assert_eq!(tree.is_empty(), true);
+    }
+
+    #[test]
+    fn shrinking_multiple_draws() {
+        let deck = CardDeck::from(vec![1, 2, 3]);
+        let tree = CardDrawTree::shrinking(&deck, 3);
+        assert_eq!(tree.probability_of(&[1, 2, 1]), PROBABILITY_ZERO);
+        assert_eq!(tree.probability_of(&[1, 2, 2]), PROBABILITY_ZERO);
+        assert_eq!(tree.probability_of(&[1, 2, 3]), Probability::new(1, 6));
+    }
+
+    #[test]
+    fn without_shrinking_multiple_draws() {
+        let deck = CardDeck::from(vec![1, 2, 3]);
+        let tree = CardDrawTree::without_shrinking(&deck, 3);
+        assert_eq!(tree.probability_of(&[1, 2, 1]), Probability::new(1, 27));
+        assert_eq!(tree.probability_of(&[1, 2, 2]), Probability::new(1, 27));
+        assert_eq!(tree.probability_of(&[1, 2, 3]), Probability::new(1, 27));
     }
 
 }
