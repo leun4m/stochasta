@@ -1,4 +1,4 @@
-use crate::{CardDeck, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
+use crate::{CardDeck, CardDrawSequence, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
@@ -90,7 +90,7 @@ where
     ///
     /// The stack won't shrink from drawing cards;
     /// instead every drawn card is put back to the stack.
-    /// 
+    ///
     /// For a shrinking deck, see [`Self::shrinking()`].
     #[must_use]
     pub fn without_shrinking(card_deck: &CardDeck<C>, draws: u32) -> Self {
@@ -101,7 +101,7 @@ where
     ///
     /// The stack will shrink from drawing cards;
     /// once a card is drawn it is no longer part of the stack.
-    /// 
+    ///
     /// For a non-shrinking deck, see [`Self::without_shrinking()`].
     #[must_use]
     pub fn shrinking(card_deck: &CardDeck<C>, draws: u32) -> Self {
@@ -165,8 +165,8 @@ where
     /// ```
     /// use stochasta::{CardDeck, CardDrawTree, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
     ///
-    /// let odd_coin = CardDeck::from(vec!["H", "T"]);
-    /// let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
+    /// let coin = CardDeck::from(vec!["H", "T"]);
+    /// let tree = CardDrawTree::without_shrinking(&coin, 2);
     ///
     /// assert_eq!(tree.probability_of(&[]), PROBABILITY_ONE);
     /// assert_eq!(tree.probability_of(&["H"]), Probability::new(1, 2));
@@ -189,6 +189,50 @@ where
     #[must_use]
     pub fn is_empty(&self) -> bool {
         self.nodes.is_empty()
+    }
+
+    /// Returns all paths.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::{CardDeck, CardDrawTree, CardDrawSequence, Probability};
+    ///
+    /// let coin = CardDeck::from(vec!["H", "T"]);
+    /// let tree = CardDrawTree::without_shrinking(&coin, 2);
+    ///
+    /// let result = tree.paths();
+    /// let one_quarter = Probability::new(1, 4);
+    ///
+    /// assert_eq!(result.len(), 4);
+    /// assert!(result.contains(&CardDrawSequence::new(vec!["H", "H"], one_quarter)));
+    /// assert!(result.contains(&CardDrawSequence::new(vec!["H", "T"], one_quarter)));
+    /// assert!(result.contains(&CardDrawSequence::new(vec!["T", "H"], one_quarter)));
+    /// assert!(result.contains(&CardDrawSequence::new(vec!["T", "T"], one_quarter)));
+    /// ```
+    #[must_use]
+    pub fn paths(&self) -> Vec<CardDrawSequence<C>> {
+        self.create_paths(&[])
+    }
+
+    fn create_paths(&self, sequence: &[C]) -> Vec<CardDrawSequence<C>> {
+        let mut result = Vec::new();
+
+        if self.is_empty() {
+            result.push(CardDrawSequence::new(
+                Vec::from(sequence),
+                self.probability_in_tree,
+            ));
+        } else {
+            for (card, tree) in self.nodes.iter() {
+                let mut s = Vec::new();
+                s.extend(sequence.iter().cloned());
+                s.push(card.clone());
+                result.extend(tree.create_paths(&s));
+            }
+        }
+
+        result
     }
 }
 
@@ -328,7 +372,7 @@ root[label="", shape="circle"];
     fn shrinking_empty() {
         let deck: CardDeck<i32> = CardDeck::new();
         let tree = CardDrawTree::shrinking(&deck, 1);
-        assert_eq!(tree.is_empty(), true);
+        assert!(tree.is_empty());
     }
 
     #[test]

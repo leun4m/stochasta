@@ -6,6 +6,8 @@
 
 - `CardDeck<C>::draw(&self, C)`
 - `CardDrawTree<C>::shrinking(&self, u32)`
+- `CardDrawTree<C>::paths(&self)`
+- `CardDrawSequence<C>` as a representation of a sequence of drawn cards
 
 ### Changed
 
