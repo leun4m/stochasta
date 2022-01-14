@@ -14,32 +14,19 @@
 //! ```
 
 mod cards;
+mod probability;
 
 pub use cards::card_deck::CardDeck;
 pub use cards::card_draw_sequence::CardDrawSequence;
 pub use cards::card_draw_tree::CardDrawTree;
-
-use num_rational::Ratio;
-
-/// The probability of a certain event
-pub type Probability = Ratio<u64>;
-
-/// A probability of 0%.
-///
-/// An event with the same probability must never occur.
-pub const PROBABILITY_ZERO: Probability = Probability::new_raw(0, 1);
-
-/// A probability of 100%.
-///
-/// An event with the same probability must occur.
-pub const PROBABILITY_ONE: Probability = Probability::new_raw(1, 1);
+pub use probability::Probability;
+pub use probability::PROBABILITY_ONE;
+pub use probability::PROBABILITY_ZERO;
 
 #[cfg(test)]
 mod tests {
 
-    use crate::CardDeck;
-    use crate::Probability;
-    use crate::PROBABILITY_ZERO;
+    use crate::{CardDeck, Probability, PROBABILITY_ZERO};
 
     #[test]
     fn coin_toss_works() {
@@ -47,7 +34,7 @@ mod tests {
         assert_eq!(coin.size(), 2);
         assert_eq!(coin.probability(&"Heads"), Probability::new(1, 2));
         assert_eq!(coin.probability(&"Tails"), Probability::new(1, 2));
-        assert_eq!(coin.probability(&"Edge"), Probability::from(0));
+        assert_eq!(coin.probability(&"Edge"), PROBABILITY_ZERO);
     }
 
     #[test]
