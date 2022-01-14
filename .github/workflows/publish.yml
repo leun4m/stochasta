@@ -8,7 +8,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  call-workflow:
+  call-workflow-1:
     uses: leun4m/stochasta/.github/workflows/test.yml@main
   publish:
     runs-on: ubuntu-latest
