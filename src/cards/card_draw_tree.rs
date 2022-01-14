@@ -3,6 +3,9 @@ use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
 /// A representation of a card drawing process.
+///
+/// # Type Parameters
+/// - `C`: The type of a single card
 #[derive(Clone, Eq, Debug)]
 pub struct CardDrawTree<C>
 where

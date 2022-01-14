@@ -22,6 +22,9 @@ use std::hash::Hash;
 /// assert_eq!(dice.probability(&"5"), Probability::new(1, 6));
 /// assert_eq!(dice.probability(&"6"), Probability::new(0, 6));
 /// ```
+///
+/// # Type Parameters
+/// - `C`: The type of a single card
 #[derive(Clone, Eq, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDeck<C>
