@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED
+
+### Changed
+
+- `Probability` is now a wrapper for `Ratio<u64>` instead of a simple type reference.
+
 ## [0.4.2] (2022-01-14)
 
 ### Changed
