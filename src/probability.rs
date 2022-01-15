@@ -29,6 +29,12 @@ impl Mul<Probability> for Probability {
     }
 }
 
+impl From<Ratio<u64>> for Probability {
+    fn from(ratio: Ratio<u64>) -> Self {
+        Probability::from_ratio(ratio)
+    }
+}
+
 impl Probability {
     /// Creates a new `Probability`.
     ///
