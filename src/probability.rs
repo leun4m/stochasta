@@ -67,21 +67,38 @@ impl Probability {
     pub fn ratio(&self) -> &Ratio<u64> {
         &self.ratio
     }
+
+    /// Returns the complementary probability: `1 - self`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::Probability;
+    ///
+    /// let one_third = Probability::new(1, 3);
+    /// let two_third = one_third.complementary();
+    /// assert_eq!(two_third, Probability::new(2, 3));
+    /// ```
+    pub fn complementary(&self) -> Self {
+        Self {
+            ratio: RATIO_ONE - self.ratio,
+        }
+    }
 }
 
 /// A probability of 0%.
 ///
 /// An event with the same probability **must never occur**.
-pub const PROBABILITY_ZERO: Probability = Probability {
-    ratio: Ratio::new_raw(0, 1),
-};
+pub const PROBABILITY_ZERO: Probability = Probability { ratio: RATIO_ZERO };
+
+const RATIO_ZERO: Ratio<u64> = Ratio::new_raw(0, 1);
 
 /// A probability of 100%.
 ///
 /// An event with the same probability **must occur.**
-pub const PROBABILITY_ONE: Probability = Probability {
-    ratio: Ratio::new_raw(1, 1),
-};
+pub const PROBABILITY_ONE: Probability = Probability { ratio: RATIO_ONE };
+
+const RATIO_ONE: Ratio<u64> = Ratio::new_raw(1, 1);
 
 #[cfg(test)]
 mod tests {
