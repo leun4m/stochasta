@@ -50,7 +50,7 @@ mod tests {
         assert_eq!(coin.probability(&"6"), PROBABILITY_ZERO);
     }
 
-    fn create_card_deck() -> CardDeck<(&str, &str)> {
+    fn create_card_deck() -> CardDeck<(&'static str, &'static str)> {
         let mut cards = Vec::new();
         for suit in ["♦", "♥", "♠", "♣"] {
             for value in [
