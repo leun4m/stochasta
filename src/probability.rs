@@ -29,6 +29,21 @@ impl Mul<Probability> for Probability {
     }
 }
 
+impl From<Ratio<u64>> for Probability {
+    /// Creates a new `Probability` from the given ratio.
+    ///
+    /// # Panics
+    ///
+    /// - if ratio > 1 ⇒ value out of bounds!
+    fn from(ratio: Ratio<u64>) -> Self {
+        if ratio > Ratio::from(1) {
+            panic!("ratio is not in the bounds of 0 and 1");
+        }
+
+        Self { ratio }
+    }
+}
+
 impl Probability {
     /// Creates a new `Probability`.
     ///
@@ -47,20 +62,7 @@ impl Probability {
     /// assert_eq!(p.ratio(), &Ratio::new(1, 3));
     /// ```
     pub fn new(numerator: u64, denominator: u64) -> Self {
-        Self::from_ratio(Ratio::new(numerator, denominator))
-    }
-
-    /// Creates a new `Probability` from the given ratio.
-    ///
-    /// # Panics
-    ///
-    /// - if ratio > 1 ⇒ value out of bounds!
-    pub fn from_ratio(ratio: Ratio<u64>) -> Self {
-        if ratio > Ratio::from(1) {
-            panic!("ratio is not in the bounds of 0 and 1");
-        }
-
-        Self { ratio }
+        Self::from(Ratio::new(numerator, denominator))
     }
 
     /// Returns the inner ratio
@@ -133,15 +135,15 @@ mod tests {
     #[test]
     fn from_ratio_standard() {
         assert_eq!(
-            Probability::from_ratio(Ratio::new(0, 7)).ratio(),
+            Probability::from(Ratio::new(0, 7)).ratio(),
             &Ratio::new(0, 1)
         );
         assert_eq!(
-            Probability::from_ratio(Ratio::new(4, 9)).ratio(),
+            Probability::from(Ratio::new(4, 9)).ratio(),
             &Ratio::new(4, 9)
         );
         assert_eq!(
-            Probability::from_ratio(Ratio::new(9, 9)).ratio(),
+            Probability::from(Ratio::new(9, 9)).ratio(),
             &Ratio::new(1, 1)
         );
     }
@@ -149,13 +151,13 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_ratio_out_of_bounds() {
-        Probability::from_ratio(Ratio::new(2, 1));
+        let _ = Probability::from(Ratio::new(2, 1));
     }
 
     #[test]
     #[should_panic]
     fn from_ratio_zero_denominator() {
-        Probability::from_ratio(Ratio::new(1, 0));
+        let _ = Probability::from(Ratio::new(1, 0));
     }
 
     #[test]
