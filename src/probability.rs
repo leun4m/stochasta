@@ -135,15 +135,15 @@ mod tests {
     #[test]
     fn from_ratio_standard() {
         assert_eq!(
-            Probability::from_ratio(Ratio::new(0, 7)).ratio(),
+            Probability::from(Ratio::new(0, 7)).ratio(),
             &Ratio::new(0, 1)
         );
         assert_eq!(
-            Probability::from_ratio(Ratio::new(4, 9)).ratio(),
+            Probability::from(Ratio::new(4, 9)).ratio(),
             &Ratio::new(4, 9)
         );
         assert_eq!(
-            Probability::from_ratio(Ratio::new(9, 9)).ratio(),
+            Probability::from(Ratio::new(9, 9)).ratio(),
             &Ratio::new(1, 1)
         );
     }
@@ -151,13 +151,13 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_ratio_out_of_bounds() {
-        Probability::from_ratio(Ratio::new(2, 1));
+        Probability::from(Ratio::new(2, 1));
     }
 
     #[test]
     #[should_panic]
     fn from_ratio_zero_denominator() {
-        Probability::from_ratio(Ratio::new(1, 0));
+        Probability::from(Ratio::new(1, 0));
     }
 
     #[test]
