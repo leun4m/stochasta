@@ -151,13 +151,13 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_ratio_out_of_bounds() {
-        Probability::from(Ratio::new(2, 1));
+        let _ = Probability::from(Ratio::new(2, 1));
     }
 
     #[test]
     #[should_panic]
     fn from_ratio_zero_denominator() {
-        Probability::from(Ratio::new(1, 0));
+        let _ = Probability::from(Ratio::new(1, 0));
     }
 
     #[test]
