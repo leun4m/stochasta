@@ -47,6 +47,8 @@ impl From<Ratio<u64>> for Probability {
 impl Probability {
     /// Creates a new `Probability`.
     ///
+    /// If you need a panic free version, see: [Probability::try_new].
+    ///
     /// # Panics
     ///
     /// - if numerator > denominator ⇒ ratio > 1 ⇒ value out of bounds!
@@ -63,6 +65,32 @@ impl Probability {
     /// ```
     pub fn new(numerator: u64, denominator: u64) -> Self {
         Self::from(Ratio::new(numerator, denominator))
+    }
+
+    /// Tries to create a new `Probability` from the given ratio.
+    ///
+    /// # Error
+    ///
+    /// - ratio > 1 => value out of bounds!
+    ///
+    /// ```
+    /// use num_rational::Ratio;
+    /// use stochasta::{Probability, ProbabilityRatioError};
+    ///
+    /// assert!(Probability::try_new(1, 2).is_ok());
+    /// assert_eq!(Probability::try_new(1, 0), Err(ProbabilityRatioError::DenominatorZero));
+    /// assert_eq!(Probability::try_new(2, 1), Err(ProbabilityRatioError::RatioGreaterOne));
+    /// ```
+    pub fn try_new(numerator: u64, denominator: u64) -> Result<Self, ProbabilityRatioError> {
+        if denominator == 0 {
+            Err(ProbabilityRatioError::DenominatorZero)
+        } else if numerator > denominator {
+            Err(ProbabilityRatioError::RatioGreaterOne)
+        } else {
+            Ok(Self {
+                ratio: Ratio::new(numerator, denominator),
+            })
+        }
     }
 
     /// Returns the inner ratio
@@ -101,6 +129,18 @@ const RATIO_ZERO: Ratio<u64> = Ratio::new_raw(0, 1);
 pub const PROBABILITY_ONE: Probability = Probability { ratio: RATIO_ONE };
 
 const RATIO_ONE: Ratio<u64> = Ratio::new_raw(1, 1);
+
+/// Errors that may happen when trying to create a probability.
+#[derive(Debug, Eq, PartialEq, PartialOrd, Ord, Hash, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ProbabilityRatioError {
+    /// The denominator must not be 0. That's a basic math rule!
+    DenominatorZero,
+    /// The ratio of `Probability` cannot be lower than 0.
+    RatioLowerZero,
+    /// The ratio of `Probability` cannot be higher than 1.
+    RatioGreaterOne,
+}
 
 #[cfg(test)]
 mod tests {

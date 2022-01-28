@@ -22,6 +22,7 @@ pub use cards::card_deck::CardDeck;
 pub use cards::card_draw_sequence::CardDrawSequence;
 pub use cards::card_draw_tree::CardDrawTree;
 pub use probability::Probability;
+pub use probability::ProbabilityRatioError;
 pub use probability::PROBABILITY_ONE;
 pub use probability::PROBABILITY_ZERO;
 
