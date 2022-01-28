@@ -27,8 +27,8 @@ pub use probability::PROBABILITY_ZERO;
 
 #[cfg(test)]
 mod tests {
-
-    use crate::{CardDeck, Probability, PROBABILITY_ZERO};
+    use crate::{CardDeck, CardDrawTree, Probability, PROBABILITY_ZERO};
+    use num_rational::Ratio;
 
     #[test]
     fn coin_toss_works() {
@@ -48,5 +48,39 @@ mod tests {
         assert_eq!(coin.probability(&"2"), Probability::new(1, 6));
         assert_eq!(coin.probability(&"5"), Probability::new(1, 6));
         assert_eq!(coin.probability(&"6"), PROBABILITY_ZERO);
+    }
+
+    fn create_card_deck() -> CardDeck<(&'static str, &'static str)> {
+        let mut cards = Vec::new();
+        for suit in ["♦", "♥", "♠", "♣"] {
+            for value in [
+                "2", "3", "4", "5", "6", "7", "8", "9", "10", "B", "D", "K", "A",
+            ] {
+                cards.push((suit, value));
+            }
+        }
+        CardDeck::from(cards)
+    }
+
+    #[test]
+    fn poker_hand_specific_order() {
+        let deck = create_card_deck();
+        let tree = CardDrawTree::shrinking(&deck, 2);
+        let probability = tree.probability_of(&[("♦", "A"), ("♥", "A")]);
+        assert_eq!(probability, Probability::new(1, 2652));
+    }
+
+    #[test]
+    fn poker_hand_just_aces() {
+        let deck = create_card_deck();
+        let tree = CardDrawTree::shrinking(&deck, 2);
+        let probability: Probability = tree
+            .paths()
+            .iter()
+            .filter(|seq| seq.cards().iter().all(|card| matches!(card, (_, "A"))))
+            .map(|seq| seq.probability().ratio())
+            .sum::<Ratio<u64>>()
+            .into();
+        assert_eq!(probability, Probability::new(6, 1326));
     }
 }
