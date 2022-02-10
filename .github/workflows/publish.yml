@@ -10,8 +10,10 @@ env:
 jobs:
   test:
     uses: leun4m/stochasta/.github/workflows/test.yml@main
+  audit:
+    uses: leun4m/stochasta/.github/workflows/audit.yml@main
   publish:
-    needs: test
+    needs: [test, audit]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
