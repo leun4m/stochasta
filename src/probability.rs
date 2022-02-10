@@ -47,7 +47,7 @@ impl From<Ratio<u64>> for Probability {
 impl Probability {
     /// Creates a new `Probability`.
     ///
-    /// If you need a panic free version, see: [Probability::try_new].
+    /// For a safer method (panic-free), please consider using: [Probability::try_new].
     ///
     /// # Panics
     ///
