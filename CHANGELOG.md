@@ -1,10 +1,11 @@
 # Changelog
 
-## UNRELEASED
+## [0.5.0] (2022-02-10)
 
 ### Changed
 
-- `Probability` is now a wrapper for `Ratio<u64>` instead of a simple type reference.
+- `Probability` is now a wrapper for `Ratio<u64>` instead of a simple type reference
+  ensuring a correct value range.
 
 ## [0.4.2] (2022-01-14)
 
@@ -63,6 +64,7 @@
     - to check the number of cards contained
     - to calculate the probability of a single card to be drawn
 
+[0.5.0]: https://github.com/leun4m/stochasta/releases/tag/v0.5.0
 [0.4.2]: https://github.com/leun4m/stochasta/releases/tag/v0.4.2
 [0.4.0]: https://github.com/leun4m/stochasta/releases/tag/v0.4.0
 [0.3.0]: https://github.com/leun4m/stochasta/releases/tag/v0.3.0
