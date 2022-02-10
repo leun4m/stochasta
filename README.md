@@ -21,6 +21,10 @@ fn main() {
 }
 ```
 
+## Documentation
+
+*The full documentation is hosted at [docs.rs/stochasta](https://docs.rs/stochasta).*
+
 ## Changelog
 
 *For Changelog / News / History / Releases, see [CHANGELOG.md](CHANGELOG.md).*
