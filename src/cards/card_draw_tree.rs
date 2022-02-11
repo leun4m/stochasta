@@ -7,6 +7,7 @@ use std::{collections::HashMap, hash::Hash};
 /// # Type Parameters
 /// - `C`: The type of a single card
 #[derive(Clone, Eq, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawTree<C>
 where
     C: Eq + Hash,

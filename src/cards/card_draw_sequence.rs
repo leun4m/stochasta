@@ -9,6 +9,7 @@ use std::hash::Hash;
 /// # See also
 ///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
 #[derive(Clone, Eq, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawSequence<C>
 where
     C: Eq + Hash,

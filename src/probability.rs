@@ -8,6 +8,7 @@ use std::ops::Mul;
 /// In other words: if you got a variable `p` from type `Probability`
 /// you can be sure about the following: `0 <= p && p <= 1`.
 #[derive(Copy, Clone, Debug, PartialOrd, Ord, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Probability {
     ratio: Ratio<u64>,
 }

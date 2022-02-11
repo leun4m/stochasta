@@ -1,5 +1,14 @@
 # Changelog
 
+## UNRELEASED
+
+### Added
+
+- `serde`-Support for:
+  - `CardDrawSequence`
+  - `CardDrawTree`
+  - `Probability`
+
 ## [0.5.0] (2022-02-10)
 
 ### Changed
