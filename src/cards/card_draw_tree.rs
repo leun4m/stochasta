@@ -1,6 +1,6 @@
 use crate::{CardDeck, CardDrawSequence, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap, fmt::Display, hash::Hash};
 
 /// A representation of a card drawing process.
 ///
@@ -240,7 +240,10 @@ where
     }
 }
 
-impl CardDrawTree<&str> {
+impl<C> CardDrawTree<C>
+where
+    C: Eq + Hash + Ord + Display,
+{
     /// Creates a [Graphviz](https://www.graphviz.org/)-graph from the decision tree.
     ///
     /// # Example
@@ -333,7 +336,7 @@ impl CardDrawTree<&str> {
         let mut result = String::new();
         let mut new_id = id;
         for (card, subtree) in self.nodes.iter().sorted_by_key(|&(c, _)| c) {
-            let (graphviz, last_id) = subtree.to_graphviz_sub(root, card, new_id + 1);
+            let (graphviz, last_id) = subtree.to_graphviz_sub(root, &card.to_string(), new_id + 1);
             new_id = last_id;
             result.push_str(&graphviz);
         }
@@ -364,12 +367,26 @@ mod tests {
 
     #[test]
     fn to_graphviz_empty() {
-        let deck = CardDeck::new();
+        let deck = CardDeck::<String>::new();
         let tree = CardDrawTree::without_shrinking(&deck, 1);
         let output = r#"digraph {
 root[label="", shape="circle"];
 }"#;
         assert_eq!(tree.to_graphviz(), output);
+    }
+
+    #[test]
+    fn to_graphviz_number() {
+        let odd_coin = CardDeck::from(vec![7, 42]);
+        let tree = CardDrawTree::without_shrinking(&odd_coin, 1);
+        let output = r#"digraph {
+root[label="", shape="circle"];
+root->7_2[label="1/2"];
+7_2[label="7 (1/2)"];
+root->42_3[label="1/2"];
+42_3[label="42 (1/2)"];
+}"#;
+        assert_eq!(output, tree.to_graphviz());
     }
 
     #[test]
