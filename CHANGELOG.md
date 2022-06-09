@@ -1,6 +1,6 @@
 # Changelog
 
-## UNRELEASED
+## [0.6.0] (2022-06-09)
 
 ### Added
 
@@ -8,6 +8,12 @@
   - `CardDrawSequence`
   - `CardDrawTree`
   - `Probability`
+
+### Changed
+
+- `CardDrawTree::to_graphviz()`
+  - uses a prefix (`_`) for the node ids
+  - is now generic
 
 ## [0.5.0] (2022-02-10)
 
@@ -73,6 +79,7 @@
     - to check the number of cards contained
     - to calculate the probability of a single card to be drawn
 
+[0.6.0]: https://github.com/leun4m/stochasta/releases/tag/v0.6.0
 [0.5.0]: https://github.com/leun4m/stochasta/releases/tag/v0.5.0
 [0.4.2]: https://github.com/leun4m/stochasta/releases/tag/v0.4.2
 [0.4.0]: https://github.com/leun4m/stochasta/releases/tag/v0.4.0
