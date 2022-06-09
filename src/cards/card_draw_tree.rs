@@ -2,6 +2,9 @@ use crate::{CardDeck, CardDrawSequence, Probability, PROBABILITY_ONE, PROBABILIT
 use itertools::Itertools;
 use std::{collections::HashMap, fmt::Display, hash::Hash};
 
+/// Prefix used for graphviz ids
+const GRAPHVIZ_PREFIX: &str = "_";
+
 /// A representation of a card drawing process.
 ///
 /// # Type Parameters
@@ -257,19 +260,19 @@ where
     /// let odd_coin = CardDeck::from(vec!["heads", "heads", "tails"]);
     /// let tree = CardDrawTree::without_shrinking(&odd_coin, 2);
     /// let output = r#"digraph {
-    /// root[label="", shape="circle"];
-    /// root->heads_2[label="2/3"];
-    /// heads_2[label="heads (2/3)"];
-    /// heads_2->heads_3[label="2/3"];
-    /// heads_3[label="heads (4/9)"];
-    /// heads_2->tails_4[label="1/3"];
-    /// tails_4[label="tails (2/9)"];
-    /// root->tails_5[label="1/3"];
-    /// tails_5[label="tails (1/3)"];
-    /// tails_5->heads_6[label="2/3"];
-    /// heads_6[label="heads (2/9)"];
-    /// tails_5->tails_7[label="1/3"];
-    /// tails_7[label="tails (1/9)"];
+    /// _root[label="", shape="circle"];
+    /// _root->_heads_2[label="2/3"];
+    /// _heads_2[label="heads (2/3)"];
+    /// _heads_2->_heads_3[label="2/3"];
+    /// _heads_3[label="heads (4/9)"];
+    /// _heads_2->_tails_4[label="1/3"];
+    /// _tails_4[label="tails (2/9)"];
+    /// _root->_tails_5[label="1/3"];
+    /// _tails_5[label="tails (1/3)"];
+    /// _tails_5->_heads_6[label="2/3"];
+    /// _heads_6[label="heads (2/9)"];
+    /// _tails_5->_tails_7[label="1/3"];
+    /// _tails_7[label="tails (1/9)"];
     /// }"#;
     /// assert_eq!(tree.to_graphviz(), output);
     /// ```
@@ -305,7 +308,7 @@ where
         let mut result = String::from("digraph {\n");
 
         let root = "root";
-        result.push_str(&format!("{}[label=\"\", shape=\"circle\"];\n", root));
+        result.push_str(&format!("{}{}[label=\"\", shape=\"circle\"];\n", GRAPHVIZ_PREFIX, root));
 
         let (subtree, _) = self.to_graphviz_iter(root, 1);
         result.push_str(&subtree);
@@ -318,12 +321,12 @@ where
         let mut result = String::new();
         let new_root = format!("{}_{}", card, id);
         result.push_str(&format!(
-            "{}->{}[label=\"{}\"];\n",
-            root, new_root, self.probability
+            "{}{}->{}{}[label=\"{}\"];\n",
+            GRAPHVIZ_PREFIX, root, GRAPHVIZ_PREFIX, new_root, self.probability
         ));
         result.push_str(&format!(
-            "{}[label=\"{} ({})\"];\n",
-            new_root, card, self.probability_in_tree
+            "{}{}[label=\"{} ({})\"];\n",
+            GRAPHVIZ_PREFIX, new_root, card, self.probability_in_tree
         ));
 
         let (subtree, new_id) = self.to_graphviz_iter(&new_root, id);
@@ -370,7 +373,7 @@ mod tests {
         let deck = CardDeck::<String>::new();
         let tree = CardDrawTree::without_shrinking(&deck, 1);
         let output = r#"digraph {
-root[label="", shape="circle"];
+_root[label="", shape="circle"];
 }"#;
         assert_eq!(tree.to_graphviz(), output);
     }
@@ -380,11 +383,11 @@ root[label="", shape="circle"];
         let odd_coin = CardDeck::from(vec![7, 42]);
         let tree = CardDrawTree::without_shrinking(&odd_coin, 1);
         let output = r#"digraph {
-root[label="", shape="circle"];
-root->7_2[label="1/2"];
-7_2[label="7 (1/2)"];
-root->42_3[label="1/2"];
-42_3[label="42 (1/2)"];
+_root[label="", shape="circle"];
+_root->_7_2[label="1/2"];
+_7_2[label="7 (1/2)"];
+_root->_42_3[label="1/2"];
+_42_3[label="42 (1/2)"];
 }"#;
         assert_eq!(output, tree.to_graphviz());
     }
