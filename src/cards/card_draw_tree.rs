@@ -308,7 +308,10 @@ where
         let mut result = String::from("digraph {\n");
 
         let root = "root";
-        result.push_str(&format!("{}{}[label=\"\", shape=\"circle\"];\n", GRAPHVIZ_PREFIX, root));
+        result.push_str(&format!(
+            "{}{}[label=\"\", shape=\"circle\"];\n",
+            GRAPHVIZ_PREFIX, root
+        ));
 
         let (subtree, _) = self.to_graphviz_iter(root, 1);
         result.push_str(&subtree);
