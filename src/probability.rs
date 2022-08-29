@@ -1,3 +1,5 @@
+use crate::binomial_coefficient::BinomialCoefficient;
+use crate::util;
 use num_rational::Ratio;
 use std::fmt::{Display, Formatter};
 use std::ops::Mul;
@@ -42,6 +44,18 @@ impl From<Ratio<u64>> for Probability {
         }
 
         Self { ratio }
+    }
+}
+
+impl From<BinomialCoefficient> for Probability {
+    fn from(coefficient: BinomialCoefficient) -> Self {
+        let n = coefficient.n();
+        let k = coefficient.k();
+
+        Self::new(
+            util::factorial(n),
+            util::factorial(k) * util::factorial(n - k),
+        )
     }
 }
 

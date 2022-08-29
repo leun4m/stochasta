@@ -15,9 +15,12 @@
 
 #![deny(missing_docs, unused_imports)]
 
+mod binomial_coefficient;
 mod cards;
 mod probability;
+mod util;
 
+pub use binomial_coefficient::BinomialCoefficient;
 pub use cards::card_deck::CardDeck;
 pub use cards::card_draw_sequence::CardDrawSequence;
 pub use cards::card_draw_tree::CardDrawTree;
