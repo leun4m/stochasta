@@ -1,9 +1,10 @@
 use std::fmt::Display;
 
 /// The value of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Hash)]
 pub enum PlayingCardValue {
     /// 2
+    #[default]
     Two,
     /// 3
     Three,

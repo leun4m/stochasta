@@ -1,9 +1,10 @@
 use std::fmt::Display;
 
 /// The suit of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Hash)]
 pub enum PlayingCardSuit {
     /// ♦ (diamonds)
+    #[default]
     Diamonds,
     /// ♣ (clubs)
     Clubs,
@@ -15,12 +16,12 @@ pub enum PlayingCardSuit {
 
 impl PlayingCardSuit {
     /// Returns `true`, if the suit is red.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::playing_cards::PlayingCardSuit;
-    /// 
+    ///
     /// assert_eq!(PlayingCardSuit::Clubs.is_red(), false);
     /// assert_eq!(PlayingCardSuit::Hearts.is_red(), true);
     /// ```
@@ -30,12 +31,12 @@ impl PlayingCardSuit {
     }
 
     /// Returns `true`, if the suit is black.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// use stochasta::playing_cards::PlayingCardSuit;
-    /// 
+    ///
     /// assert_eq!(PlayingCardSuit::Clubs.is_black(), true);
     /// assert_eq!(PlayingCardSuit::Hearts.is_black(), false);
     /// ```
@@ -68,5 +69,4 @@ mod tests {
     fn display_check() {
         assert_eq!(format!("{}", PlayingCardSuit::Clubs), "♣");
     }
-
 }

@@ -5,7 +5,7 @@ use super::{PlayingCardSuit, PlayingCardValue};
 /// A standard playing card like **10 ♥** consisting of
 /// a [`PlayingCardValue`](crate::playing_cards::PlayingCardValue) and
 /// a [`PlayingCardSuit`](crate::playing_cards::PlayingCardSuit).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PlayingCard {
     value: PlayingCardValue,
     suit: PlayingCardSuit,
