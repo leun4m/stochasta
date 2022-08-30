@@ -1,5 +1,12 @@
 # Changelog
 
+## UNRELEASED
+
+### Changed
+
+- `CardDrawTree::to_graphviz()`
+  - replaced internally `push_str(format!(...))` with `write!` 
+
 ## [0.6.0] (2022-06-09)
 
 ### Added

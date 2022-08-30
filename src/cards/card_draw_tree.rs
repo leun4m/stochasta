@@ -1,5 +1,6 @@
 use crate::{CardDeck, CardDrawSequence, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
+use std::fmt::Write;
 use std::{collections::HashMap, fmt::Display, hash::Hash};
 
 /// Prefix used for graphviz ids
@@ -305,13 +306,17 @@ where
     ///   brackets
     #[must_use]
     pub fn to_graphviz(&self) -> String {
-        let mut result = String::from("digraph {\n");
+        let mut result = String::new();
 
         let root = "root";
-        result.push_str(&format!(
-            "{}{}[label=\"\", shape=\"circle\"];\n",
-            GRAPHVIZ_PREFIX, root
-        ));
+
+        write!(
+            result,
+            "digraph {{\n{prefix}{root}[label=\"\", shape=\"circle\"];\n",
+            prefix = GRAPHVIZ_PREFIX,
+            root = root
+        )
+        .expect("Not written");
 
         let (subtree, _) = self.to_graphviz_iter(root, 1);
         result.push_str(&subtree);
@@ -323,14 +328,19 @@ where
     fn to_graphviz_sub(&self, root: &str, card: &str, id: u32) -> (String, u32) {
         let mut result = String::new();
         let new_root = format!("{}_{}", card, id);
-        result.push_str(&format!(
-            "{}{}->{}{}[label=\"{}\"];\n",
-            GRAPHVIZ_PREFIX, root, GRAPHVIZ_PREFIX, new_root, self.probability
-        ));
-        result.push_str(&format!(
-            "{}{}[label=\"{} ({})\"];\n",
-            GRAPHVIZ_PREFIX, new_root, card, self.probability_in_tree
-        ));
+
+        write!(
+            result,
+            "{prefix}{root_id}->{prefix}{node_id}[label=\"{prob_edge}\"];\n\
+             {prefix}{node_id}[label=\"{node_label} ({prob_node})\"];\n",
+            prefix = GRAPHVIZ_PREFIX,
+            root_id = root,
+            node_id = new_root,
+            node_label = card,
+            prob_edge = self.probability,
+            prob_node = self.probability_in_tree
+        )
+        .expect("Not written");
 
         let (subtree, new_id) = self.to_graphviz_iter(&new_root, id);
         result.push_str(&subtree);
