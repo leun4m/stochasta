@@ -32,6 +32,22 @@ pub enum PlayingCardValue {
     Ace,
 }
 
+pub const ALL_VALUES: [PlayingCardValue; 13] = [
+    PlayingCardValue::Two,
+    PlayingCardValue::Three,
+    PlayingCardValue::Four,
+    PlayingCardValue::Five,
+    PlayingCardValue::Six,
+    PlayingCardValue::Seven,
+    PlayingCardValue::Eight,
+    PlayingCardValue::Nine,
+    PlayingCardValue::Ten,
+    PlayingCardValue::Jack,
+    PlayingCardValue::Queen,
+    PlayingCardValue::King,
+    PlayingCardValue::Ace,
+];
+
 impl PlayingCardValue {
     fn as_str(&self) -> &'static str {
         match self {

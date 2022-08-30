@@ -1,8 +1,8 @@
-use std::ops::RangeInclusive;
+use std::collections::HashSet;
 
 use crate::CardDeck;
 
-use super::{PlayingCard, PlayingCardSuit, PlayingCardValue};
+use super::{PlayingCard, PlayingCardSuit, PlayingCardValue, playing_card_value::ALL_VALUES, playing_card_suit::ALL_SUITS};
 
 /// A builder for quickly creating decks of playing cards.
 ///
@@ -20,8 +20,8 @@ use super::{PlayingCard, PlayingCardSuit, PlayingCardValue};
 /// assert_eq!(deck.size(), 64);
 /// ```
 pub struct PlayingCardDeck {
-    values: RangeInclusive<PlayingCardValue>,
-    suits: RangeInclusive<PlayingCardSuit>,
+    values: HashSet<PlayingCardValue>,
+    suits: HashSet<PlayingCardSuit>,
     count: u64,
 }
 
@@ -29,21 +29,45 @@ impl PlayingCardDeck {
     /// Constructs a new empty deck.
     pub fn new() -> Self {
         Self {
-            values: PlayingCardValue::default()..=PlayingCardValue::default(),
-            suits: PlayingCardSuit::default()..=PlayingCardSuit::default(),
+            values: HashSet::new(),
+            suits: HashSet::new(),
             count: 1,
         }
     }
 
     /// Sets the value range.
-    pub fn values(mut self, values: RangeInclusive<PlayingCardValue>) -> Self {
-        self.values = values;
+    pub fn values(mut self, values: &[PlayingCardValue]) -> Self {
+        self.values.extend(values);
         self
     }
 
     /// Sets the suit range.
-    pub fn suits(mut self, suits: RangeInclusive<PlayingCardSuit>) -> Self {
-        self.suits = suits;
+    pub fn suits(mut self, suits: &[PlayingCardSuit]) -> Self {
+        self.suits.extend(suits);
+        self
+    }
+
+    /// Sets the value range. (both inclusive)
+    pub fn value_range(mut self, from: PlayingCardValue, to: PlayingCardValue) -> Self {
+        self.values.extend(arr_from_to(&ALL_VALUES, &from, &to));
+        self
+    }
+
+    /// Sets the value range. (both inclusive)
+    pub fn suits_range(mut self, from: PlayingCardSuit, to: PlayingCardSuit) -> Self {
+        self.suits.extend(arr_from_to(&ALL_SUITS, &from, &to));
+        self
+    }
+
+    /// Sets all `PlayingCardValue`s inclusive
+    pub fn all_values(mut self) -> Self {
+        self.values.extend(ALL_VALUES);
+        self
+    }
+
+    /// Sets all `PlayingCardSuit`s inclusive
+    pub fn all_suits(mut self) -> Self {
+        self.suits.extend(ALL_SUITS);
         self
     }
 
@@ -56,8 +80,8 @@ impl PlayingCardDeck {
     /// Converts this to a [`CardDeck`](crate::CardDeck).
     pub fn to_deck(&self) -> CardDeck<PlayingCard> {
         let mut deck = CardDeck::new();
-        for value in values_from_to(self.values.start(), self.values.end()) {
-            for suit in suits_from_to(self.suits.start(), self.suits.end()) {
+        for value in self.values.iter().copied() {
+            for suit in self.suits.iter().copied() {
                 deck.add_times(PlayingCard::new(value, suit), self.count);
             }
         }
@@ -69,37 +93,6 @@ impl Default for PlayingCardDeck {
     fn default() -> Self {
         Self::new()
     }
-}
-
-const ALL_SUITS: [PlayingCardSuit; 4] = [
-    PlayingCardSuit::Diamonds,
-    PlayingCardSuit::Clubs,
-    PlayingCardSuit::Hearts,
-    PlayingCardSuit::Spades,
-];
-
-const ALL_VALUES: [PlayingCardValue; 13] = [
-    PlayingCardValue::Two,
-    PlayingCardValue::Three,
-    PlayingCardValue::Four,
-    PlayingCardValue::Five,
-    PlayingCardValue::Six,
-    PlayingCardValue::Seven,
-    PlayingCardValue::Eight,
-    PlayingCardValue::Nine,
-    PlayingCardValue::Ten,
-    PlayingCardValue::Jack,
-    PlayingCardValue::Queen,
-    PlayingCardValue::King,
-    PlayingCardValue::Ace,
-];
-
-fn suits_from_to(from: &PlayingCardSuit, to: &PlayingCardSuit) -> Vec<PlayingCardSuit> {
-    arr_from_to(&ALL_SUITS, from, to)
-}
-
-fn values_from_to(from: &PlayingCardValue, to: &PlayingCardValue) -> Vec<PlayingCardValue> {
-    arr_from_to(&ALL_VALUES, from, to)
 }
 
 fn arr_from_to<T>(arr: &[T], from: &T, to: &T) -> Vec<T>

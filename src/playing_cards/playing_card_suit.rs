@@ -14,6 +14,13 @@ pub enum PlayingCardSuit {
     Spades,
 }
 
+pub const ALL_SUITS: [PlayingCardSuit; 4] = [
+    PlayingCardSuit::Diamonds,
+    PlayingCardSuit::Clubs,
+    PlayingCardSuit::Hearts,
+    PlayingCardSuit::Spades,
+];
+
 impl PlayingCardSuit {
     /// Returns `true`, if the suit is red.
     ///
