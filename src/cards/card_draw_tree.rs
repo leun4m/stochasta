@@ -332,7 +332,7 @@ where
             result,
             "digraph {{\n{prefix}{root}[label=\"\", shape=\"circle\"];\n",
             prefix = GRAPHVIZ_PREFIX,
-            root = root
+            root = root.replace(' ', "")
         )
         .expect("Not written");
 
@@ -352,8 +352,8 @@ where
             "{prefix}{root_id}->{prefix}{node_id}[label=\"{prob_edge}\"];\n\
              {prefix}{node_id}[label=\"{node_label} ({prob_node})\"];\n",
             prefix = GRAPHVIZ_PREFIX,
-            root_id = root,
-            node_id = new_root,
+            root_id = root.replace(' ', ""),
+            node_id = new_root.replace(' ', ""),
             node_label = card,
             prob_edge = self.probability,
             prob_node = self.probability_in_tree

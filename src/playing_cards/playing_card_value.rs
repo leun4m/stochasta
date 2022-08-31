@@ -49,6 +49,23 @@ pub const ALL_VALUES: [PlayingCardValue; 13] = [
 ];
 
 impl PlayingCardValue {
+    /// Returns `true` if the value is J, Q or K. 
+    pub fn is_picture(&self) -> bool {
+        *self == PlayingCardValue::Jack ||
+        *self == PlayingCardValue::Queen ||
+        *self == PlayingCardValue::King
+    }
+
+    /// Returns `true` if the value is numeric (2-10).
+    pub fn is_number(&self) -> bool {
+        !self.is_picture() && !self.is_ace()
+    }
+
+    /// Returns `true` if the value is A.
+    pub fn is_ace(&self) -> bool {
+        *self == PlayingCardValue::Ace
+    }
+
     fn as_str(&self) -> &'static str {
         match self {
             PlayingCardValue::Two => "2",
