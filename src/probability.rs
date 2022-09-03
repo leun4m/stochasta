@@ -19,6 +19,12 @@ impl Display for Probability {
     }
 }
 
+impl Default for Probability {
+    fn default() -> Self {
+        PROBABILITY_ZERO
+    }
+}
+
 impl Mul<Probability> for Probability {
     type Output = Probability;
 

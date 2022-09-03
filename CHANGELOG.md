@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.2] (2022-09-03)
+
+### Added
+
+- Implementation of `Default` for `Probability`
+
+### Fixed
+
+- `documentation` in Cargo.toml linked to the docs of serde instead of <https://docs.rs/stochasta/>
+
 ## [0.6.1] (2022-09-03)
 
 ### Fixed
@@ -94,6 +104,7 @@
   - to calculate the probability of a single card to be drawn
 
 [#13]: https://github.com/leun4m/stochasta/issues/13
+[0.6.2]: https://github.com/leun4m/stochasta/releases/tag/v0.6.2
 [0.6.1]: https://github.com/leun4m/stochasta/releases/tag/v0.6.1
 [0.6.0]: https://github.com/leun4m/stochasta/releases/tag/v0.6.0
 [0.5.0]: https://github.com/leun4m/stochasta/releases/tag/v0.5.0
