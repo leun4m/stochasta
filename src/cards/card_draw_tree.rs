@@ -131,7 +131,7 @@ where
                         card_deck,
                         draws - 1,
                         card_probability,
-                        probability,
+                        tree.probability_in_tree,
                     ),
                 );
             }
@@ -155,7 +155,7 @@ where
                         &new_stack,
                         draws - 1,
                         card_probability,
-                        probability,
+                        tree.probability_in_tree,
                     ),
                 );
             }
@@ -362,6 +362,8 @@ where
 
 #[cfg(test)]
 mod tests {
+    use num_rational::Ratio;
+
     use super::*;
 
     #[test]
@@ -428,5 +430,19 @@ _42_3[label="42 (1/2)"];
         assert_eq!(tree.probability_of(&[1, 2, 1]), Probability::new(1, 27));
         assert_eq!(tree.probability_of(&[1, 2, 2]), Probability::new(1, 27));
         assert_eq!(tree.probability_of(&[1, 2, 3]), Probability::new(1, 27));
+    }
+
+    #[test]
+    fn test() {
+        let deck = CardDeck::from(vec![1, 2, 3]);
+        let tree = CardDrawTree::shrinking(&deck, 3);
+    
+        assert_eq!(
+            tree.paths()
+                .iter()
+                .map(|x| x.probability().ratio())
+                .sum::<Ratio<_>>(),
+            Ratio::new(1, 1)
+        );
     }
 }
