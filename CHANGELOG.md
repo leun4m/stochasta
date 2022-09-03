@@ -1,11 +1,18 @@
 # Changelog
 
-## UNRELEASED
+## [0.6.1] (2022-09-03)
+
+### Fixed
+
+- `CardDrawTree`
+  - there was an issue with the calculation of the probabilities in the tree ([#13]) where the sum
+    of all leaves would not resolve to 1 since parent probabilities would not be transferred
+    properly to child nodes
 
 ### Changed
 
 - `CardDrawTree::to_graphviz()`
-  - replaced internally `push_str(format!(...))` with `write!` 
+  - replaced internally `push_str(format!(...))` with `write!`
 
 ## [0.6.0] (2022-06-09)
 
@@ -53,9 +60,9 @@
 ### Added
 
 - `CardDrawTree<C>` as a representation of a card drawing process with methods
-    - to create an empty one
-    - a single and multilayered one from `CardDeck<C>` (without deck shrinking)
-    - to create a [Graphviz](https://www.graphviz.org/) representation
+  - to create an empty one
+  - a single and multilayered one from `CardDeck<C>` (without deck shrinking)
+  - to create a [Graphviz](https://www.graphviz.org/) representation
 
 ### Fixed
 
@@ -82,10 +89,12 @@
 ### Added
 
 - `CardDeck<C>` as a representation of a deck of cards with methods
-    - to add and remove cards
-    - to check the number of cards contained
-    - to calculate the probability of a single card to be drawn
+  - to add and remove cards
+  - to check the number of cards contained
+  - to calculate the probability of a single card to be drawn
 
+[#13]: https://github.com/leun4m/stochasta/issues/13
+[0.6.1]: https://github.com/leun4m/stochasta/releases/tag/v0.6.1
 [0.6.0]: https://github.com/leun4m/stochasta/releases/tag/v0.6.0
 [0.5.0]: https://github.com/leun4m/stochasta/releases/tag/v0.5.0
 [0.4.2]: https://github.com/leun4m/stochasta/releases/tag/v0.4.2
