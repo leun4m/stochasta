@@ -433,9 +433,23 @@ _42_3[label="42 (1/2)"];
     }
 
     #[test]
-    fn test() {
+    fn shrinking_sum_resolves_to_one() {
         let deck = CardDeck::from(vec![1, 2, 3]);
         let tree = CardDrawTree::shrinking(&deck, 3);
+    
+        assert_eq!(
+            tree.paths()
+                .iter()
+                .map(|x| x.probability().ratio())
+                .sum::<Ratio<_>>(),
+            Ratio::new(1, 1)
+        );
+    }
+
+    #[test]
+    fn without_shrinking_sum_resolves_to_one() {
+        let deck = CardDeck::from(vec![1, 2, 3]);
+        let tree = CardDrawTree::without_shrinking(&deck, 3);
     
         assert_eq!(
             tree.paths()
