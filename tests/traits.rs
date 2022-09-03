@@ -1,6 +1,6 @@
 //! Checks whether the types provide a default.
 
-use stochasta::{Probability, CardDeck, CardDrawSequence, CardDrawTree};
+use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability};
 
 #[test]
 fn default_implemented() {
