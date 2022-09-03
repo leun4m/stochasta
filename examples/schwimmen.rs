@@ -1,7 +1,7 @@
 use num_rational::Ratio;
 use stochasta::{
     playing_cards::{PlayingCardDeck, PlayingCardValue},
-    CardDrawTree, Probability, PROBABILITY_ZERO,
+    CardDrawTree, Probability,
 };
 
 fn main() {
@@ -10,26 +10,21 @@ fn main() {
         .all_suits()
         .to_deck();
     let shrinking = CardDrawTree::shrinking(&deck, 3);
-    // println!("{}", shrinking.to_graphviz());
-    let p: Vec<_> = shrinking
+
+    let p: Probability = shrinking
         .paths()
         .iter()
+        .filter(|p| {
+            p.cards().iter().any(|x| x.value().is_ace())
+                && p.cards()
+                    .iter()
+                    .filter(|x| x.value().is_picture() || x.value() == PlayingCardValue::Ten)
+                    .count()
+                    == 2
+        })
         .map(|p| *p.probability().ratio())
-        .collect();
+        .sum::<Ratio<_>>()
+        .into();
 
-    // .filter(|p| {
-    //     p.cards().iter().any(|x| x.value().is_ace())
-    //         // && p.cards()
-    //         //     .iter()
-    //         //     .filter(|x| x.value().is_picture() || x.value() == PlayingCardValue::Ten)
-    //         //     .count()
-    //         //     == 2
-    // })
-    // .map(|p| *p.probability().ratio())
-    // .collect();
-    // .sum();
-
-    // .reduce(|acc, item| Probability::from(acc.ratio() + item.ratio()))
-    // .unwrap_or(PROBABILITY_ZERO);
-    println!("{:?}", p);
+    println!("{}", p.to_f64());
 }
