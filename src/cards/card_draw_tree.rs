@@ -436,7 +436,7 @@ _42_3[label="42 (1/2)"];
     fn shrinking_sum_resolves_to_one() {
         let deck = CardDeck::from(vec![1, 2, 3]);
         let tree = CardDrawTree::shrinking(&deck, 3);
-    
+
         assert_eq!(
             tree.paths()
                 .iter()
@@ -450,7 +450,7 @@ _42_3[label="42 (1/2)"];
     fn without_shrinking_sum_resolves_to_one() {
         let deck = CardDeck::from(vec![1, 2, 3]);
         let tree = CardDrawTree::without_shrinking(&deck, 3);
-    
+
         assert_eq!(
             tree.paths()
                 .iter()
