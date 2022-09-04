@@ -8,7 +8,7 @@ use std::{fmt::Debug, fmt::Display, hash::Hash};
 ///
 /// # See also
 ///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
-#[derive(Clone, Eq, PartialEq, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, PartialOrd, Ord, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawSequence<C>
 where

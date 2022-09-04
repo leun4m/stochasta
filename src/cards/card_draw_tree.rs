@@ -13,7 +13,7 @@ const GRAPHVIZ_PREFIX: &str = "_";
 ///
 /// # Type Parameters
 /// - `C`: The type of a single card
-#[derive(Clone, Eq, PartialEq, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, PartialOrd, Ord, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawTree<C>
 where

@@ -4,9 +4,25 @@
 
 ### Added
 
+- `CardDeck` gains the following traits
+  - `Display`
+  - `Hash`
+  - `Ord`
+  - `PartialOrd`
 - `CardDrawSequence` gains the following traits
   - `Display`
   - `Hash`
+  - `Ord`
+  - `PartialOrd`
+- `CardDrawTree` gains the following traits
+  - `Display`
+  - `Hash`
+  - `Ord`
+  - `PartialOrd`
+
+### Changed
+
+- Type parameter `<C>` in `CardDeck` and `CardDrawTree` requires now `Ord` trait
 
 ### Changed
 

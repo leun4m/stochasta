@@ -57,4 +57,7 @@ fn check_copy() {
 #[test]
 fn check_ord() {
     assert!(impls!(Probability: Ord & PartialOrd));
+    assert!(impls!(CardDeck<String>: Ord & PartialOrd));
+    assert!(impls!(CardDrawSequence<String>: Ord & PartialOrd));
+    assert!(impls!(CardDrawTree<String>: Ord & PartialOrd));
 }
