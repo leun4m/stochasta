@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `CardDrawSequence` gains the following traits
+  - `Display`
+  - `Hash`
+
+### Changed
+
+- `CardDrawSequence`
+  - derives `PartialEq` instead of manually implementing
+
 ## [0.6.2] (2022-09-03)
 
 ### Added

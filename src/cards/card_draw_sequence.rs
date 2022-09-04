@@ -1,5 +1,9 @@
 use crate::{Probability, PROBABILITY_ZERO};
-use std::hash::Hash;
+use std::{
+    fmt::Debug,
+    fmt::Display,
+    hash::Hash,
+};
 
 /// A representation of a sequence of drawn cards.
 ///
@@ -8,7 +12,7 @@ use std::hash::Hash;
 ///
 /// # See also
 ///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
-#[derive(Clone, Eq, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawSequence<C>
 where
@@ -16,15 +20,6 @@ where
 {
     cards: Vec<C>,
     probability: Probability,
-}
-
-impl<C> PartialEq for CardDrawSequence<C>
-where
-    C: Eq + Hash,
-{
-    fn eq(&self, other: &Self) -> bool {
-        self.cards == other.cards && self.probability == other.probability
-    }
 }
 
 impl<C> Default for CardDrawSequence<C>
@@ -36,6 +31,24 @@ where
             cards: Vec::default(),
             probability: PROBABILITY_ZERO,
         }
+    }
+}
+
+impl<C> Display for CardDrawSequence<C>
+where
+    C: Eq + Hash + Debug + Display,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[{}] ({})",
+            self.cards
+                .iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<String>>()
+                .join("-"),
+            self.probability
+        )
     }
 }
 
