@@ -1,4 +1,4 @@
-use crate::{Probability, PROBABILITY_ZERO};
+use crate::Probability;
 use std::{fmt::Debug, fmt::Display, hash::Hash};
 
 /// A representation of a sequence of drawn cards.
@@ -8,7 +8,7 @@ use std::{fmt::Debug, fmt::Display, hash::Hash};
 ///
 /// # See also
 ///- [`CardDrawTree::paths`](crate::CardDrawTree::paths)
-#[derive(Clone, Eq, PartialEq, PartialOrd, Ord, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawSequence<C>
 where
@@ -16,18 +16,6 @@ where
 {
     cards: Vec<C>,
     probability: Probability,
-}
-
-impl<C> Default for CardDrawSequence<C>
-where
-    C: Eq + Hash,
-{
-    fn default() -> Self {
-        Self {
-            cards: Vec::default(),
-            probability: PROBABILITY_ZERO,
-        }
-    }
 }
 
 impl<C> Display for CardDrawSequence<C>

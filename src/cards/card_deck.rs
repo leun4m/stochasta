@@ -26,13 +26,30 @@ use std::hash::Hash;
 ///
 /// # Type Parameters
 /// - `C`: The type of a single card
-#[derive(Clone, Eq, PartialEq, Hash, Ord, PartialOrd, Debug)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDeck<C>
 where
     C: Eq + Hash + Ord,
 {
     cards: BTreeMap<C, u64>,
+}
+
+impl<C> Display for CardDeck<C>
+where
+    C: Eq + Hash + Ord + Display,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.cards
+                .iter()
+                .map(|(k, v)| format!("{}: {}x", k, v))
+                .collect::<Vec<String>>()
+                .join("\n")
+        )
+    }
 }
 
 impl<C> From<Vec<C>> for CardDeck<C>
@@ -76,32 +93,6 @@ where
         for card in cards {
             self.add(card);
         }
-    }
-}
-
-impl<C> Display for CardDeck<C>
-where
-    C: Eq + Hash + Ord + Display,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            self.cards
-                .iter()
-                .map(|(k, v)| format!("{}: {}x", k, v))
-                .collect::<Vec<String>>()
-                .join("\n")
-        )
-    }
-}
-
-impl<C> Default for CardDeck<C>
-where
-    C: Eq + Hash + Ord + Default,
-{
-    fn default() -> Self {
-        Self::new()
     }
 }
 
