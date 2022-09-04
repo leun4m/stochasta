@@ -1,7 +1,10 @@
 use crate::{CardDeck, CardDrawSequence, Probability, PROBABILITY_ONE, PROBABILITY_ZERO};
 use itertools::Itertools;
-use std::fmt::Write;
-use std::{collections::HashMap, fmt::Display, hash::Hash};
+use std::collections::BTreeMap;
+use std::{
+    fmt::{Display, Write},
+    hash::Hash,
+};
 
 /// Prefix used for graphviz ids
 const GRAPHVIZ_PREFIX: &str = "_";
@@ -10,40 +13,55 @@ const GRAPHVIZ_PREFIX: &str = "_";
 ///
 /// # Type Parameters
 /// - `C`: The type of a single card
-#[derive(Clone, Eq, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDrawTree<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Ord,
 {
     probability: Probability,
     probability_in_tree: Probability,
-    nodes: HashMap<C, CardDrawTree<C>>,
+    nodes: BTreeMap<C, CardDrawTree<C>>,
 }
 
 impl<C> Default for CardDrawTree<C>
 where
-    C: Eq + Hash + Clone,
+    C: Eq + Hash + Ord + Clone,
 {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<C> PartialEq for CardDrawTree<C>
+impl<C> Display for CardDrawTree<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Ord + Clone + Display,
 {
-    fn eq(&self, rhs: &Self) -> bool {
-        self.probability == rhs.probability
-            && self.probability_in_tree == rhs.probability_in_tree
-            && self.nodes == rhs.nodes
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.nodes
+                .iter()
+                .map(|x| format!(
+                    "* {} ({})\n{}",
+                    x.0,
+                    x.1.probability_in_tree,
+                    x.1.to_string()
+                        .lines()
+                        .map(|x| format!("\t{}", x))
+                        .collect::<Vec<String>>()
+                        .join("\n")
+                ))
+                .collect::<Vec<String>>()
+                .join("\n")
+        )
     }
 }
 
 impl<C> CardDrawTree<C>
 where
-    C: Eq + Hash + Clone,
+    C: Eq + Hash + Ord + Clone,
 {
     /// Creates a new empty tree.
     ///
@@ -60,7 +78,7 @@ where
         Self {
             probability: PROBABILITY_ONE,
             probability_in_tree: PROBABILITY_ONE,
-            nodes: HashMap::new(),
+            nodes: BTreeMap::new(),
         }
     }
 
@@ -70,7 +88,7 @@ where
         Self {
             probability,
             probability_in_tree: parent_probability * probability,
-            nodes: HashMap::<C, CardDrawTree<C>>::new(),
+            nodes: BTreeMap::<C, CardDrawTree<C>>::new(),
         }
     }
 
@@ -457,6 +475,30 @@ _42_3[label="42 (1/2)"];
                 .map(|x| x.probability().ratio())
                 .sum::<Ratio<_>>(),
             Ratio::new(1, 1)
+        );
+    }
+
+    #[test]
+    fn tree_to_string() {
+        let deck = CardDeck::from(vec![1, 2, 3]);
+        let tree = CardDrawTree::shrinking(&deck, 3);
+        assert_eq!(
+            r#"* 1 (1/3)
+	* 2 (1/6)
+		* 3 (1/6)
+	* 3 (1/6)
+		* 2 (1/6)
+* 2 (1/3)
+	* 1 (1/6)
+		* 3 (1/6)
+	* 3 (1/6)
+		* 1 (1/6)
+* 3 (1/3)
+	* 1 (1/6)
+		* 2 (1/6)
+	* 2 (1/6)
+		* 1 (1/6)"#,
+            tree.to_string()
         );
     }
 }

@@ -1,11 +1,11 @@
 //! Checks whether the types conform to [C-COMMON-TRAITS]
-//! 
+//!
 //! [C-COMMON-TRAITS]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-common-traits
 
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 
-use stochasta::{Probability, CardDeck, CardDrawSequence, CardDrawTree};
+use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability};
 
 #[macro_use]
 extern crate impls;
@@ -41,9 +41,9 @@ fn check_clone() {
 #[test]
 fn check_basics() {
     assert_impls_basics!(Probability);
-    // assert_impls_basics!(CardDeck<String>);
+    assert_impls_basics!(CardDeck<String>);
     assert_impls_basics!(CardDrawSequence<String>);
-    // assert_impls_basics!(CardDrawTree<String>);
+    assert_impls_basics!(CardDrawTree<String>);
 }
 
 #[test]

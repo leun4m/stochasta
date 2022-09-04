@@ -1,9 +1,5 @@
 use crate::{Probability, PROBABILITY_ZERO};
-use std::{
-    fmt::Debug,
-    fmt::Display,
-    hash::Hash,
-};
+use std::{fmt::Debug, fmt::Display, hash::Hash};
 
 /// A representation of a sequence of drawn cards.
 ///
