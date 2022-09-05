@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.7.0] (2022-09-05)
 
 ### Added
 
@@ -133,6 +133,7 @@
   - to calculate the probability of a single card to be drawn
 
 [#13]: https://github.com/leun4m/stochasta/issues/13
+[0.7.0]: https://github.com/leun4m/stochasta/releases/tag/v0.7.0
 [0.6.2]: https://github.com/leun4m/stochasta/releases/tag/v0.6.2
 [0.6.1]: https://github.com/leun4m/stochasta/releases/tag/v0.6.1
 [0.6.0]: https://github.com/leun4m/stochasta/releases/tag/v0.6.0
