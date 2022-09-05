@@ -102,3 +102,17 @@ mod c_send_sync {
         assert!(impls!(CardDrawTree<String>: Sync));
     }
 }
+
+/// Checks whether the types conform to [C-GOOD-ERR]
+///
+/// [C-GOOD-ERR]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-good-err
+mod c_good_err {
+    use std::error::Error;
+
+    use stochasta::ProbabilityRatioError;
+
+    #[test]
+    fn check_error() {
+        assert!(impls!(ProbabilityRatioError: Error));
+    }
+}

@@ -1,4 +1,5 @@
 use num_rational::Ratio;
+use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::ops::Mul;
 
@@ -162,6 +163,20 @@ impl Display for ProbabilityRatioError {
                     "The ratio of `Probability` cannot be higher than 1.",
             }
         )
+    }
+}
+
+impl Error for ProbabilityRatioError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        None
+    }
+    
+    fn description(&self) -> &str {
+        "description() is deprecated; use Display"
+    }
+
+    fn cause(&self) -> Option<&dyn Error> {
+        self.source()
     }
 }
 
