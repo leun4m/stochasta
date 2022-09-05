@@ -25,7 +25,6 @@ mod c_common_traits {
     /// - Hash
     /// - Debug
     /// - Display
-    /// - Default
     macro_rules! assert_impls_basics {
         ($input:ty) => {
             assert!(impls!($input: Clone));
@@ -36,8 +35,16 @@ mod c_common_traits {
             assert!(impls!($input: Hash));
             assert!(impls!($input: Debug));
             assert!(impls!($input: Display));
-            assert!(impls!($input: Default));
         };
+    }
+
+    #[test]
+    fn check_basics() {
+        assert_impls_basics!(Probability);
+        assert_impls_basics!(ProbabilityRatioError);
+        assert_impls_basics!(CardDeck<String>);
+        assert_impls_basics!(CardDrawSequence<String>);
+        assert_impls_basics!(CardDrawTree<String>);
     }
 
     #[test]
@@ -50,12 +57,12 @@ mod c_common_traits {
     }
 
     #[test]
-    fn check_basics() {
-        assert_impls_basics!(Probability);
-        // assert_impls_basics!(ProbabilityRatioError);
-        assert_impls_basics!(CardDeck<String>);
-        assert_impls_basics!(CardDrawSequence<String>);
-        assert_impls_basics!(CardDrawTree<String>);
+    fn check_default() {
+        assert!(impls!(Probability: Default));
+        // assert!(impls!(ProbabilityRatioError: Default));
+        assert!(impls!(CardDeck<String>: Default));
+        assert!(impls!(CardDrawSequence<String>: Default));
+        assert!(impls!(CardDrawTree<String>: Default));
     }
 }
 
@@ -64,17 +71,26 @@ mod c_common_traits {
 /// [C-SERDE]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-serde
 #[cfg(feature = "serde")]
 mod c_serde {
+    use serde::{Deserialize, Serialize};
+
     use super::*;
 
     #[test]
-    fn check_serde() {
-        use serde::{Deserialize, Serialize};
+    fn check_serialize() {
+        assert!(impls!(Probability: Serialize));
+        assert!(impls!(ProbabilityRatioError: Serialize));
+        assert!(impls!(CardDeck<String>: Serialize));
+        assert!(impls!(CardDrawSequence<String>: Serialize));
+        assert!(impls!(CardDrawTree<String>: Serialize));
+    }
 
-        assert!(impls!(Probability: Serialize & Deserialize<'static>));
-        assert!(impls!(ProbabilityRatioError: Serialize & Deserialize<'static>));
-        assert!(impls!(CardDeck<String>: Serialize & Deserialize<'static>));
-        assert!(impls!(CardDrawSequence<String>: Serialize & Deserialize<'static>));
-        assert!(impls!(CardDrawTree<String>: Serialize & Deserialize<'static>));
+    #[test]
+    fn check_deserialize() {
+        assert!(impls!(Probability: Deserialize<'static>));
+        assert!(impls!(ProbabilityRatioError: Deserialize<'static>));
+        assert!(impls!(CardDeck<String>: Deserialize<'static>));
+        assert!(impls!(CardDrawSequence<String>: Deserialize<'static>));
+        assert!(impls!(CardDrawTree<String>: Deserialize<'static>));
     }
 }
 
