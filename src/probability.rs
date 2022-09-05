@@ -1,4 +1,5 @@
 use num_rational::Ratio;
+use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::ops::Mul;
 
@@ -138,7 +139,7 @@ pub const PROBABILITY_ONE: Probability = Probability { ratio: RATIO_ONE };
 const RATIO_ONE: Ratio<u64> = Ratio::new_raw(1, 1);
 
 /// Errors that may happen when trying to create a probability.
-#[derive(Debug, Eq, PartialEq, PartialOrd, Ord, Hash, Copy, Clone)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ProbabilityRatioError {
     /// The denominator must not be 0. That's a basic math rule!
@@ -147,6 +148,36 @@ pub enum ProbabilityRatioError {
     RatioLowerZero,
     /// The ratio of `Probability` cannot be higher than 1.
     RatioGreaterOne,
+}
+
+impl Display for ProbabilityRatioError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                ProbabilityRatioError::DenominatorZero => "The denominator must not be 0.",
+                ProbabilityRatioError::RatioLowerZero =>
+                    "The ratio of `Probability` cannot be lower than 0.",
+                ProbabilityRatioError::RatioGreaterOne =>
+                    "The ratio of `Probability` cannot be higher than 1.",
+            }
+        )
+    }
+}
+
+impl Error for ProbabilityRatioError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        None
+    }
+
+    fn description(&self) -> &str {
+        "description() is deprecated; use Display"
+    }
+
+    fn cause(&self) -> Option<&dyn Error> {
+        self.source()
+    }
 }
 
 #[cfg(test)]
