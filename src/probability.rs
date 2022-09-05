@@ -170,7 +170,7 @@ impl Error for ProbabilityRatioError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         None
     }
-    
+
     fn description(&self) -> &str {
         "description() is deprecated; use Display"
     }
