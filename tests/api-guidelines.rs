@@ -1,5 +1,5 @@
 //! Checks the api against the [Rust API Guideline]
-//! 
+//!
 //! [Rust API Guideline]: https://rust-lang.github.io/api-guidelines
 
 use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability};
@@ -39,7 +39,7 @@ mod c_common_traits {
             assert!(impls!($input: Default));
         };
     }
-    
+
     #[test]
     fn check_copy() {
         assert!(impls!(Probability: Copy));
@@ -54,5 +54,23 @@ mod c_common_traits {
         assert_impls_basics!(CardDeck<String>);
         assert_impls_basics!(CardDrawSequence<String>);
         assert_impls_basics!(CardDrawTree<String>);
+    }
+}
+
+/// Checks whether the types conform to [C-SERDE]
+///
+/// [C-SERDE]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-serde
+#[cfg(feature = "serde")]
+mod c_serde {
+    use super::*;
+
+    #[test]
+    fn check_serde() {
+        use serde::{Deserialize, Serialize};
+
+        assert!(impls!(Probability: Serialize & Deserialize<'static>));
+        assert!(impls!(CardDeck<String>: Serialize & Deserialize<'static>));
+        assert!(impls!(CardDrawSequence<String>: Serialize & Deserialize<'static>));
+        assert!(impls!(CardDrawTree<String>: Serialize & Deserialize<'static>));
     }
 }
