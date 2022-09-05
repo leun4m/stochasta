@@ -26,5 +26,8 @@ version = "1.0"
 optional = true
 features = ["derive"]
 
+[dev-dependencies]
+impls = "1.0"
+
 # [features]
 # serde2 = ["serde", "num-rational/serde"]

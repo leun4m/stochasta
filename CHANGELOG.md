@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `CardDeck` gains the following traits
+  - `Display`
+  - `Hash`
+  - `Ord`
+  - `PartialOrd`
+- `CardDrawSequence` gains the following traits
+  - `Display`
+  - `Hash`
+  - `Ord`
+  - `PartialOrd`
+- `CardDrawTree` gains the following traits
+  - `Display`
+  - `Hash`
+  - `Ord`
+  - `PartialOrd`
+
+### Changed
+
+- Type parameter `<C>` in `CardDeck` and `CardDrawTree` requires now `Ord` trait
+
+### Changed
+
+- `CardDrawSequence`
+  - derives `PartialEq` instead of manually implementing
+
 ## [0.6.2] (2022-09-03)
 
 ### Added

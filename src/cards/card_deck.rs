@@ -1,5 +1,6 @@
 use crate::{Probability, PROBABILITY_ZERO};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
+use std::fmt::Display;
 use std::hash::Hash;
 
 /// A deck of cards.
@@ -25,18 +26,35 @@ use std::hash::Hash;
 ///
 /// # Type Parameters
 /// - `C`: The type of a single card
-#[derive(Clone, Eq, Debug)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CardDeck<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Ord,
 {
-    cards: HashMap<C, u64>,
+    cards: BTreeMap<C, u64>,
+}
+
+impl<C> Display for CardDeck<C>
+where
+    C: Eq + Hash + Ord + Display,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.cards
+                .iter()
+                .map(|(k, v)| format!("{}: {}x", k, v))
+                .collect::<Vec<String>>()
+                .join("\n")
+        )
+    }
 }
 
 impl<C> From<Vec<C>> for CardDeck<C>
 where
-    C: Eq + Hash + Default,
+    C: Eq + Hash + Ord + Default,
 {
     fn from(cards: Vec<C>) -> Self {
         let mut deck = Self::new();
@@ -51,7 +69,7 @@ where
 
 impl<C> FromIterator<C> for CardDeck<C>
 where
-    C: Eq + Hash + Default,
+    C: Eq + Hash + Ord + Default,
 {
     fn from_iter<T>(cards: T) -> Self
     where
@@ -69,7 +87,7 @@ where
 
 impl<C> Extend<C> for CardDeck<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Ord,
 {
     fn extend<T: IntoIterator<Item = C>>(&mut self, cards: T) {
         for card in cards {
@@ -78,27 +96,9 @@ where
     }
 }
 
-impl<C> PartialEq for CardDeck<C>
-where
-    C: Eq + Hash,
-{
-    fn eq(&self, rhs: &Self) -> bool {
-        self.cards == rhs.cards
-    }
-}
-
-impl<C> Default for CardDeck<C>
-where
-    C: Eq + Hash + Default,
-{
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl<C> CardDeck<C>
 where
-    C: Eq + Hash,
+    C: Eq + Hash + Ord,
 {
     /// Creates a new empty deck.
     ///
@@ -113,7 +113,7 @@ where
     #[must_use]
     pub fn new() -> Self {
         Self {
-            cards: HashMap::new(),
+            cards: BTreeMap::new(),
         }
     }
 
@@ -331,7 +331,7 @@ where
 
 impl<C> CardDeck<C>
 where
-    C: Eq + Hash + Clone,
+    C: Eq + Hash + Ord + Clone,
 {
     /// Draws one exemplar of `card` from the deck and returns a **new** deck.
     ///
@@ -366,5 +366,11 @@ mod tests {
         let mut deck = CardDeck::from(vec![1, 2, 3]);
         deck.remove_times(3, 1);
         assert!(deck.probabilities().values().all(|&x| x > PROBABILITY_ZERO));
+    }
+
+    #[test]
+    fn to_string() {
+        let deck = CardDeck::from(vec![3, 1, 2, 3]);
+        assert_eq!("1: 1x\n2: 1x\n3: 2x", deck.to_string());
     }
 }
