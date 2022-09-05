@@ -6,6 +6,7 @@
 
 - `ProbabilityRatioError` gains the following traits
   - `Display`
+  - `Error`
 
 ## [0.7.0] (2022-09-05)
 
