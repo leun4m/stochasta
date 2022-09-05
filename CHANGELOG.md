@@ -23,9 +23,6 @@
 ### Changed
 
 - Type parameter `<C>` in `CardDeck` and `CardDrawTree` requires now `Ord` trait
-
-### Changed
-
 - `CardDrawSequence`
   - derives `PartialEq` instead of manually implementing
 
