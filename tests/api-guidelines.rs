@@ -74,3 +74,26 @@ mod c_serde {
         assert!(impls!(CardDrawTree<String>: Serialize & Deserialize<'static>));
     }
 }
+
+/// Checks whether the types conform to [C-SEND-SYNC]
+///
+/// [C-SEND-SYNC]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-send-sync
+mod c_send_sync {
+    use super::*;
+
+    #[test]
+    fn check_send() {
+        assert!(impls!(Probability: Send));
+        assert!(impls!(CardDeck<String>: Send));
+        assert!(impls!(CardDrawSequence<String>: Send));
+        assert!(impls!(CardDrawTree<String>: Send));
+    }
+
+    #[test]
+    fn check_sync() {
+        assert!(impls!(Probability: Sync));
+        assert!(impls!(CardDeck<String>: Sync));
+        assert!(impls!(CardDrawSequence<String>: Sync));
+        assert!(impls!(CardDrawTree<String>: Sync));
+    }
+}
