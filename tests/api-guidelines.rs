@@ -2,7 +2,7 @@
 //!
 //! [Rust API Guideline]: https://rust-lang.github.io/api-guidelines
 
-use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability};
+use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
 #[macro_use]
 extern crate impls;
@@ -43,6 +43,7 @@ mod c_common_traits {
     #[test]
     fn check_copy() {
         assert!(impls!(Probability: Copy));
+        assert!(impls!(ProbabilityRatioError: Copy));
         // assert!(impls!(CardDeck<String>: Copy));
         // assert!(impls!(CardDrawSequence<String>: Copy));
         // assert!(impls!(CardDrawTree<String>: Copy));
@@ -51,6 +52,7 @@ mod c_common_traits {
     #[test]
     fn check_basics() {
         assert_impls_basics!(Probability);
+        // assert_impls_basics!(ProbabilityRatioError);
         assert_impls_basics!(CardDeck<String>);
         assert_impls_basics!(CardDrawSequence<String>);
         assert_impls_basics!(CardDrawTree<String>);
@@ -69,6 +71,7 @@ mod c_serde {
         use serde::{Deserialize, Serialize};
 
         assert!(impls!(Probability: Serialize & Deserialize<'static>));
+        assert!(impls!(ProbabilityRatioError: Serialize & Deserialize<'static>));
         assert!(impls!(CardDeck<String>: Serialize & Deserialize<'static>));
         assert!(impls!(CardDrawSequence<String>: Serialize & Deserialize<'static>));
         assert!(impls!(CardDrawTree<String>: Serialize & Deserialize<'static>));
@@ -84,6 +87,7 @@ mod c_send_sync {
     #[test]
     fn check_send() {
         assert!(impls!(Probability: Send));
+        assert!(impls!(ProbabilityRatioError: Send));
         assert!(impls!(CardDeck<String>: Send));
         assert!(impls!(CardDrawSequence<String>: Send));
         assert!(impls!(CardDrawTree<String>: Send));
@@ -91,7 +95,8 @@ mod c_send_sync {
 
     #[test]
     fn check_sync() {
-        assert!(impls!(Probability: Sync));
+        assert!(impls!(Probability: Send));
+        assert!(impls!(ProbabilityRatioError: Sync));
         assert!(impls!(CardDeck<String>: Sync));
         assert!(impls!(CardDrawSequence<String>: Sync));
         assert!(impls!(CardDrawTree<String>: Sync));
