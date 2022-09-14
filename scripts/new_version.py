@@ -18,7 +18,8 @@ from dotenv import load_dotenv
 
 
 def main():
-    version = input("Version: ")
+    check_secure_for_release()
+    version = input("Version: ").strip()
     date = datetime.datetime.now().date().isoformat()
 
     release_notes = get_release_notes()
@@ -37,6 +38,24 @@ def main():
     if accept.lower() == "y":
         publish_release(f"v{version}", release_notes)
         os.system(f"rm RELEASE_NOTES")
+        os.system(f"git checkout release")
+        os.system(f"git merge v{version} --ff-only")
+        os.system(f"git push")
+        os.system(f"git checkout develop")
+
+
+def check_secure_for_release():
+    branch = os.popen("git branch --show-current").read()
+    if branch.strip() != "develop":
+        abort("Not on branch develop")
+    changes = os.popen("git status --short").read()
+    if changes.strip() != "":
+        abort("Repository not clean")
+
+
+def abort(message):
+    print(f"ERROR: {message}!")
+    exit()
 
 
 def get_release_notes():
