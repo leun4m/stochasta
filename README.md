@@ -23,7 +23,7 @@ fn main() {
 
 ## Documentation
 
-*The full documentation is hosted at [docs.rs/stochasta](https://docs.rs/stochasta).*
+*The complete documentation is hosted at [docs.rs/stochasta](https://docs.rs/stochasta).*
 
 ## Changelog
 

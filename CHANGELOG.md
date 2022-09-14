@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.7.1] (2022-09-14)
 
 ### Added
 
@@ -149,3 +149,4 @@
 [0.6.1]: https://github.com/leun4m/stochasta/releases/tag/v0.6.1
 [0.6.2]: https://github.com/leun4m/stochasta/releases/tag/v0.6.2
 [0.7.0]: https://github.com/leun4m/stochasta/releases/tag/v0.7.0
+[0.7.1]: https://github.com/leun4m/stochasta/releases/tag/v0.7.1
