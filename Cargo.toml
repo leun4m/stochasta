@@ -10,7 +10,7 @@ license = "MIT OR Apache-2.0"
 keywords = ["stochastic", "probability"]
 categories = ["mathematics"]
 
-exclude = [".github"]
+exclude = [".github", "scripts"]
 
 [dependencies]
 itertools = "0.10"
