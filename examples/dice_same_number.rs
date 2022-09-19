@@ -14,10 +14,7 @@ fn main() {
     let tree = CardDrawTree::without_shrinking(&dice, throws);
     let probabiltiy = tree.probability_of(&repeats(throws));
 
-    println!(
-        "Probability of throwing {}x a six: {}",
-        throws, probabiltiy
-    );
+    println!("Probability of throwing {}x a six: {}", throws, probabiltiy);
 }
 
 fn repeats(draws: u32) -> Vec<u8> {
