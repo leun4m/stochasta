@@ -21,13 +21,15 @@ fn main() {
 }
 ```
 
+More examples can be found in the [examples/](examples/) directory and in the documentation.
+
 ## Documentation
 
-*The complete documentation is hosted at [docs.rs/stochasta](https://docs.rs/stochasta).*
+The complete documentation is hosted at [docs.rs/stochasta](https://docs.rs/stochasta).
 
 ## Changelog
 
-*For Changelog / News / History / Releases, see [CHANGELOG.md](CHANGELOG.md).*
+For Changelog / News / History / Releases, see [CHANGELOG.md](CHANGELOG.md).
 
 ## Bugs / Issues / Feature Requests
 
