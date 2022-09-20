@@ -1,4 +1,6 @@
-# Changelog
+# CHANGELOG for stochasta
+
+## Unreleased
 
 ## [0.7.1] (2022-09-14)
 
