@@ -21,7 +21,7 @@ fn main() {
 }
 ```
 
-More examples can be found in the [examples/](examples/) directory and in the documentation.
+More examples can be found in the [examples](examples/) directory ([`cargo run --example <example-name>`](https://doc.rust-lang.org/cargo/commands/cargo-run.html#examples)).
 
 ## Documentation
 
