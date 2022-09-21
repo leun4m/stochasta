@@ -12,6 +12,10 @@
 //! assert_eq!(coin.probability(&"heads"), Probability::new(1, 2));
 //! assert_eq!(coin.probability(&"tails"), Probability::new(1, 2));
 //! ```
+//!
+//! More examples may be found under the [examples] directory.
+//!
+//! [examples]: https://github.com/leun4m/stochasta/tree/develop/examples
 
 #![deny(missing_docs, unused_imports)]
 
