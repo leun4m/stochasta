@@ -12,8 +12,8 @@ use super::{PlayingCard, PlayingCardSuit, PlayingCardValue, playing_card_value::
 /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
 ///
 /// let deck = PlayingCardDeck::new()
-///     .values(PlayingCardValue::Seven..=PlayingCardValue::Ace)
-///     .suits(PlayingCardSuit::Diamonds..=PlayingCardSuit::Spades)
+///     .value_range(PlayingCardValue::Seven, PlayingCardValue::Ace)
+///     .suits_range(PlayingCardSuit::Diamonds, PlayingCardSuit::Spades)
 ///     .count(2)
 ///     .to_deck();
 /// println!("{:?}", deck);

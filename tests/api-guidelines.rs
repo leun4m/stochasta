@@ -4,6 +4,9 @@
 
 use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
+#[cfg(playing_cards)]
+use stochasta::playing_cards::{PlayingCard, PlayingCardSuit, PlayingCardValue};
+
 #[macro_use]
 extern crate impls;
 
@@ -45,6 +48,13 @@ mod c_common_traits {
         assert_impls_basics!(CardDeck<String>);
         assert_impls_basics!(CardDrawSequence<String>);
         assert_impls_basics!(CardDrawTree<String>);
+
+        #[cfg(playing_cards)]
+        {
+            assert_impls_basics!(PlayingCard);
+            assert_impls_basics!(PlayingCardSuit);
+            assert_impls_basics!(PlayingCardValue);
+        }
     }
 
     #[test]
@@ -54,6 +64,13 @@ mod c_common_traits {
         // assert!(impls!(CardDeck<String>: Copy));
         // assert!(impls!(CardDrawSequence<String>: Copy));
         // assert!(impls!(CardDrawTree<String>: Copy));
+
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Copy));
+            assert!(impls!(PlayingCardSuit: Copy));
+            assert!(impls!(PlayingCardValue: Copy));
+        }
     }
 
     #[test]
@@ -63,6 +80,13 @@ mod c_common_traits {
         assert!(impls!(CardDeck<String>: Default));
         assert!(impls!(CardDrawSequence<String>: Default));
         assert!(impls!(CardDrawTree<String>: Default));
+
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Default));
+            assert!(impls!(PlayingCardSuit: Default));
+            assert!(impls!(PlayingCardValue: Default));
+        }
     }
 }
 
@@ -82,6 +106,13 @@ mod c_serde {
         assert!(impls!(CardDeck<String>: Serialize));
         assert!(impls!(CardDrawSequence<String>: Serialize));
         assert!(impls!(CardDrawTree<String>: Serialize));
+
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Serialize));
+            assert!(impls!(PlayingCardSuit: Serialize));
+            assert!(impls!(PlayingCardValue: Serialize));
+        }
     }
 
     #[test]
@@ -91,6 +122,13 @@ mod c_serde {
         assert!(impls!(CardDeck<String>: Deserialize<'static>));
         assert!(impls!(CardDrawSequence<String>: Deserialize<'static>));
         assert!(impls!(CardDrawTree<String>: Deserialize<'static>));
+
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Deserialize<'static>));
+            assert!(impls!(PlayingCardSuit: Deserialize<'static>));
+            assert!(impls!(PlayingCardValue: Deserialize<'static>));
+        }
     }
 }
 
@@ -108,6 +146,13 @@ mod c_send_sync {
         assert!(impls!(CardDeck<String>: Send));
         assert!(impls!(CardDrawSequence<String>: Send));
         assert!(impls!(CardDrawTree<String>: Send));
+        
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Send));
+            assert!(impls!(PlayingCardSuit: Send));
+            assert!(impls!(PlayingCardValue: Send));
+        }
     }
 
     #[test]
@@ -117,6 +162,13 @@ mod c_send_sync {
         assert!(impls!(CardDeck<String>: Sync));
         assert!(impls!(CardDrawSequence<String>: Sync));
         assert!(impls!(CardDrawTree<String>: Sync));
+
+        #[cfg(playing_cards)]
+        {
+            assert!(impls!(PlayingCard: Sync));
+            assert!(impls!(PlayingCardSuit: Sync));
+            assert!(impls!(PlayingCardValue: Sync));
+        }
     }
 }
 

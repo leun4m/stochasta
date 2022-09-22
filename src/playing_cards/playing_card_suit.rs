@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 /// The suit of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Hash)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 pub enum PlayingCardSuit {
     /// ♦ (diamonds)
     #[default]
