@@ -1,8 +1,11 @@
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 
 use crate::CardDeck;
 
-use super::{PlayingCard, PlayingCardSuit, PlayingCardValue, playing_card_value::ALL_VALUES, playing_card_suit::ALL_SUITS};
+use super::{
+    playing_card_suit::ALL_SUITS, playing_card_value::ALL_VALUES, PlayingCard, PlayingCardSuit,
+    PlayingCardValue,
+};
 
 /// A builder for quickly creating decks of playing cards.
 ///
@@ -19,9 +22,11 @@ use super::{PlayingCard, PlayingCardSuit, PlayingCardValue, playing_card_value::
 /// println!("{:?}", deck);
 /// assert_eq!(deck.size(), 64);
 /// ```
+///
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct PlayingCardDeck {
-    values: HashSet<PlayingCardValue>,
-    suits: HashSet<PlayingCardSuit>,
+    values: BTreeSet<PlayingCardValue>,
+    suits: BTreeSet<PlayingCardSuit>,
     count: u64,
 }
 
@@ -29,8 +34,8 @@ impl PlayingCardDeck {
     /// Constructs a new empty deck.
     pub fn new() -> Self {
         Self {
-            values: HashSet::new(),
-            suits: HashSet::new(),
+            values: BTreeSet::new(),
+            suits: BTreeSet::new(),
             count: 1,
         }
     }

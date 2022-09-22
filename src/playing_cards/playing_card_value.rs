@@ -49,11 +49,11 @@ pub const ALL_VALUES: [PlayingCardValue; 13] = [
 ];
 
 impl PlayingCardValue {
-    /// Returns `true` if the value is J, Q or K. 
+    /// Returns `true` if the value is J, Q or K.
     pub fn is_picture(&self) -> bool {
-        *self == PlayingCardValue::Jack ||
-        *self == PlayingCardValue::Queen ||
-        *self == PlayingCardValue::King
+        *self == PlayingCardValue::Jack
+            || *self == PlayingCardValue::Queen
+            || *self == PlayingCardValue::King
     }
 
     /// Returns `true` if the value is numeric (2-10).
