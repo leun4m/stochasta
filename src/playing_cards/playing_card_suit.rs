@@ -1,7 +1,9 @@
 use std::fmt::Display;
 
+use enumset::EnumSetType;
+
 /// The suit of a playing card.
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+#[derive(EnumSetType, Ord, PartialOrd, Hash, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PlayingCardSuit {
     /// ♦ (diamonds)

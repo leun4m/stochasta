@@ -1,5 +1,6 @@
-use std::{collections::BTreeSet, fmt::Display};
+use std::fmt::Display;
 
+use enumset::EnumSet;
 use itertools::Itertools;
 
 use crate::CardDeck;
@@ -28,8 +29,8 @@ use super::{
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlayingCardDeck {
-    values: BTreeSet<PlayingCardValue>,
-    suits: BTreeSet<PlayingCardSuit>,
+    values: EnumSet<PlayingCardValue>,
+    suits: EnumSet<PlayingCardSuit>,
     count: u64,
 }
 
@@ -37,20 +38,26 @@ impl PlayingCardDeck {
     /// Constructs a new empty deck.
     pub fn new() -> Self {
         Self {
-            values: BTreeSet::new(),
-            suits: BTreeSet::new(),
+            values: EnumSet::new(),
+            suits: EnumSet::new(),
             count: 1,
         }
     }
 
     /// Sets the value range.
-    pub fn values(mut self, values: &[PlayingCardValue]) -> Self {
+    pub fn values<I>(mut self, values: I) -> Self
+    where
+        I: IntoIterator<Item = PlayingCardValue>,
+    {
         self.values.extend(values);
         self
     }
 
     /// Sets the suit range.
-    pub fn suits(mut self, suits: &[PlayingCardSuit]) -> Self {
+    pub fn suits<I>(mut self, suits: I) -> Self
+    where
+        I: IntoIterator<Item = PlayingCardSuit>,
+    {
         self.suits.extend(suits);
         self
     }
@@ -88,8 +95,8 @@ impl PlayingCardDeck {
     /// Converts this to a [`CardDeck`](crate::CardDeck).
     pub fn to_deck(&self) -> CardDeck<PlayingCard> {
         let mut deck = CardDeck::new();
-        for value in self.values.iter().copied() {
-            for suit in self.suits.iter().copied() {
+        for value in self.values.iter() {
+            for suit in self.suits.iter() {
                 deck.add_times(PlayingCard::new(value, suit), self.count);
             }
         }
@@ -133,8 +140,8 @@ mod tests {
     #[test]
     fn test_display() {
         let deck = PlayingCardDeck::new()
-            .suits(&[PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
-            .values(&[
+            .suits([PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
+            .values([
                 PlayingCardValue::Jack,
                 PlayingCardValue::Queen,
                 PlayingCardValue::King,
