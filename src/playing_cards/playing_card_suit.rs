@@ -3,7 +3,7 @@ use std::fmt::Display;
 use enumset::EnumSetType;
 
 /// The suit of a playing card.
-#[derive(EnumSetType, Ord, PartialOrd, Hash, Debug, Default)]
+#[derive(EnumSetType, Ord, PartialOrd, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PlayingCardSuit {
     /// ♦ (diamonds)
@@ -68,6 +68,12 @@ impl PlayingCardSuit {
 impl Display for PlayingCardSuit {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.as_char())
+    }
+}
+
+impl std::hash::Hash for PlayingCardSuit {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        core::mem::discriminant(self).hash(state);
     }
 }
 

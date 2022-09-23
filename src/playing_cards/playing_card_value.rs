@@ -3,7 +3,7 @@ use std::fmt::Display;
 use enumset::EnumSetType;
 
 /// The value of a playing card.
-#[derive(EnumSetType, Ord, PartialOrd, Hash, Debug, Default)]
+#[derive(EnumSetType, Ord, PartialOrd, Debug, Default)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PlayingCardValue {
     /// 2
@@ -124,6 +124,12 @@ impl PlayingCardValue {
 impl Display for PlayingCardValue {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.as_str())
+    }
+}
+
+impl std::hash::Hash for PlayingCardValue {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        core::mem::discriminant(self).hash(state);
     }
 }
 
