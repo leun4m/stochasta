@@ -26,7 +26,7 @@ use super::{
 /// assert_eq!(deck.size(), 64);
 /// ```
 ///
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlayingCardDeck {
     values: EnumSet<PlayingCardValue>,

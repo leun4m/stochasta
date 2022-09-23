@@ -69,7 +69,7 @@ mod c_common_traits {
         #[cfg(feature = "playing_cards")]
         {
             assert!(impls!(PlayingCard: Copy));
-            // assert!(impls!(PlayingCardDeck: Copy));
+            assert!(impls!(PlayingCardDeck: Copy));
             assert!(impls!(PlayingCardSuit: Copy));
             assert!(impls!(PlayingCardValue: Copy));
         }
