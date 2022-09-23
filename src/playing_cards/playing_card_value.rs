@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 /// The value of a playing card.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PlayingCardValue {
     /// 2
     #[default]

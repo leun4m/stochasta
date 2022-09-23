@@ -6,6 +6,7 @@ use super::{PlayingCardSuit, PlayingCardValue};
 /// a [`PlayingCardValue`](crate::playing_cards::PlayingCardValue) and
 /// a [`PlayingCardSuit`](crate::playing_cards::PlayingCardSuit).
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlayingCard {
     value: PlayingCardValue,
     suit: PlayingCardSuit,

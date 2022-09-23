@@ -26,6 +26,7 @@ use super::{
 /// ```
 ///
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlayingCardDeck {
     values: BTreeSet<PlayingCardValue>,
     suits: BTreeSet<PlayingCardSuit>,
