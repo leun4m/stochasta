@@ -53,14 +53,14 @@ pub const ALL_VALUES: [PlayingCardValue; 13] = [
 
 impl PlayingCardValue {
     /// Returns `true` if the value is J, Q or K.
-    /// 
+    ///
     /// # Example
     ///
     /// ```
     /// use stochasta::playing_cards::PlayingCardValue;
     ///
     /// assert_eq!(PlayingCardValue::King.is_picture(), true);
-    /// 
+    ///
     /// assert_eq!(PlayingCardValue::Ace.is_picture(), false);
     /// assert_eq!(PlayingCardValue::Two.is_picture(), false);
     /// ```
@@ -78,7 +78,7 @@ impl PlayingCardValue {
     /// use stochasta::playing_cards::PlayingCardValue;
     ///
     /// assert_eq!(PlayingCardValue::Two.is_number(), true);
-    /// 
+    ///
     /// assert_eq!(PlayingCardValue::King.is_number(), false);
     /// assert_eq!(PlayingCardValue::Ace.is_number(), false);
     /// ```
@@ -94,7 +94,7 @@ impl PlayingCardValue {
     /// use stochasta::playing_cards::PlayingCardValue;
     ///
     /// assert_eq!(PlayingCardValue::Ace.is_ace(), true);
-    /// 
+    ///
     /// assert_eq!(PlayingCardValue::King.is_ace(), false);
     /// assert_eq!(PlayingCardValue::Two.is_ace(), false);
     /// ```
