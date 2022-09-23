@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use super::{PlayingCardSuit, PlayingCardValue};
 
-/// A standard playing card like **10 ♥** consisting of
+/// A standard playing card like **10♥** consisting of
 /// a [`PlayingCardValue`](crate::playing_cards::PlayingCardValue) and
 /// a [`PlayingCardSuit`](crate::playing_cards::PlayingCardSuit).
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
@@ -66,7 +66,7 @@ impl PlayingCard {
 
 impl Display for PlayingCard {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.value, self.suit)
+        write!(f, "{}{}", self.value, self.suit)
     }
 }
 
@@ -77,6 +77,6 @@ mod tests {
     #[test]
     fn display_check() {
         let king_hearts = PlayingCard::new(PlayingCardValue::King, PlayingCardSuit::Hearts);
-        assert_eq!(format!("{}", king_hearts), "K ♥");
+        assert_eq!(format!("{}", king_hearts), "K♥");
     }
 }

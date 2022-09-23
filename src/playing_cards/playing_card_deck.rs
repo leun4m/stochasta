@@ -138,7 +138,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_display() {
+    fn display_check() {
         let deck = PlayingCardDeck::new()
             .suits([PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
             .values([
