@@ -1,4 +1,6 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, fmt::Display};
+
+use itertools::Itertools;
 
 use crate::CardDeck;
 
@@ -100,6 +102,20 @@ impl Default for PlayingCardDeck {
     }
 }
 
+impl Display for PlayingCardDeck {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[{}] ({}x)",
+            self.suits
+                .iter()
+                .map(|s| self.values.iter().map(|v| format!("{}{}", v, s)).join(" "))
+                .join(" "),
+            self.count
+        )
+    }
+}
+
 fn arr_from_to<T>(arr: &[T], from: &T, to: &T) -> Vec<T>
 where
     T: Eq + Clone,
@@ -107,4 +123,23 @@ where
     let from_idx = arr.iter().position(|x| x == from).unwrap();
     let to_idx = arr.iter().position(|x| x == to).unwrap();
     arr[from_idx..=to_idx].to_vec()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_display() {
+        let deck = PlayingCardDeck::new()
+            .suits(&[PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
+            .values(&[
+                PlayingCardValue::Jack,
+                PlayingCardValue::Queen,
+                PlayingCardValue::King,
+            ])
+            .count(2);
+
+        assert_eq!("[J♣ Q♣ K♣ J♥ Q♥ K♥] (2x)", deck.to_string());
+    }
 }
