@@ -14,6 +14,25 @@
   - `Probability::ratio`
   - `Probability::complementary`
 
+## Unreleased
+
+### Added
+
+- Feature: `playing_cards` (to create a classic card deck more easily)
+  - `PlayingCard`
+    - consisting of suit and value
+  - `PlayingCardDeck`
+    - a builder for `CardDeck<PlayingCard>`
+  - `PlayingCardSuit`
+    - enum for `♦ ♣ ♥ ♠`
+  - `PlayingCardValue`
+    - enum for `2 3 4 5 6 7 8 9 10 J Q K A`
+
+### Changed
+
+- `CardDrawTree`
+  - `to_graphviz` works with space-containing roots
+
 ## [0.7.1] (2022-09-14)
 
 ### Added

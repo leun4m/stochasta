@@ -74,13 +74,13 @@ impl PlayingCardDeck {
         self
     }
 
-    /// Sets all `PlayingCardValue`s inclusive
+    /// Sets all `PlayingCardValue`s inclusive.
     pub fn all_values(mut self) -> Self {
         self.values.extend(ALL_VALUES);
         self
     }
 
-    /// Sets all `PlayingCardSuit`s inclusive
+    /// Sets all `PlayingCardSuit`s inclusive.
     pub fn all_suits(mut self) -> Self {
         self.suits.extend(ALL_SUITS);
         self
