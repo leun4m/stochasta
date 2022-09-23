@@ -53,6 +53,17 @@ pub const ALL_VALUES: [PlayingCardValue; 13] = [
 
 impl PlayingCardValue {
     /// Returns `true` if the value is J, Q or K.
+    /// 
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::PlayingCardValue;
+    ///
+    /// assert_eq!(PlayingCardValue::King.is_picture(), true);
+    /// 
+    /// assert_eq!(PlayingCardValue::Ace.is_picture(), false);
+    /// assert_eq!(PlayingCardValue::Two.is_picture(), false);
+    /// ```
     pub fn is_picture(&self) -> bool {
         *self == PlayingCardValue::Jack
             || *self == PlayingCardValue::Queen
@@ -60,11 +71,33 @@ impl PlayingCardValue {
     }
 
     /// Returns `true` if the value is numeric (2-10).
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::PlayingCardValue;
+    ///
+    /// assert_eq!(PlayingCardValue::Two.is_number(), true);
+    /// 
+    /// assert_eq!(PlayingCardValue::King.is_number(), false);
+    /// assert_eq!(PlayingCardValue::Ace.is_number(), false);
+    /// ```
     pub fn is_number(&self) -> bool {
         !self.is_picture() && !self.is_ace()
     }
 
     /// Returns `true` if the value is A.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::PlayingCardValue;
+    ///
+    /// assert_eq!(PlayingCardValue::Ace.is_ace(), true);
+    /// 
+    /// assert_eq!(PlayingCardValue::King.is_ace(), false);
+    /// assert_eq!(PlayingCardValue::Two.is_ace(), false);
+    /// ```
     pub fn is_ace(&self) -> bool {
         *self == PlayingCardValue::Ace
     }
