@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Added
+
+- `[must_use]` flags
+  - `CardDrawSequence::new`
+  - `CardDrawSequence::cards`
+  - `CardDrawSequence::probability`
+  - `Probability::new`
+  - `Probability::ratio`
+  - `Probability::complementary`
+
 ## [0.7.1] (2022-09-14)
 
 ### Added
