@@ -20,7 +20,7 @@ use super::{
 /// let deck = PlayingCardDeck::new()
 ///     .value_range(PlayingCardValue::Seven, PlayingCardValue::Ace)
 ///     .suits_range(PlayingCardSuit::Diamonds, PlayingCardSuit::Spades)
-///     .count(2)
+///     .set_count(2)
 ///     .to_deck();
 /// println!("{:?}", deck);
 /// assert_eq!(deck.size(), 64);
@@ -36,6 +36,15 @@ pub struct PlayingCardDeck {
 
 impl PlayingCardDeck {
     /// Constructs a new empty deck.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new();
+    /// assert!(deck.is_empty())
+    /// ```
     pub fn new() -> Self {
         Self {
             values: EnumSet::new(),
@@ -44,20 +53,23 @@ impl PlayingCardDeck {
         }
     }
 
-    /// Sets the value range.
-    pub fn values<I>(mut self, values: I) -> Self
+    /// Sets the values.
+    pub fn set_values<I>(mut self, values: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardValue>,
     {
+        self.values = values;
+        self.values.clear();
         self.values.extend(values);
         self
     }
 
-    /// Sets the suit range.
-    pub fn suits<I>(mut self, suits: I) -> Self
+    /// Sets the suits.
+    pub fn set_suits<I>(mut self, suits: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardSuit>,
     {
+        self.suits.clear();
         self.suits.extend(suits);
         self
     }
@@ -87,7 +99,7 @@ impl PlayingCardDeck {
     }
 
     /// Sets the count of cards.
-    pub fn count(mut self, count: u64) -> Self {
+    pub fn set_count(mut self, count: u64) -> Self {
         self.count = count;
         self
     }
@@ -101,6 +113,11 @@ impl PlayingCardDeck {
             }
         }
         deck
+    }
+
+    /// Returns `true` if deck contains no cards.
+    pub fn is_empty(&self) -> bool {
+        self.count == 0 || self.suits.is_empty() || self.values.is_empty()
     }
 }
 
@@ -140,13 +157,13 @@ mod tests {
     #[test]
     fn display_check() {
         let deck = PlayingCardDeck::new()
-            .suits([PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
-            .values([
+            .set_suits([PlayingCardSuit::Clubs, PlayingCardSuit::Hearts])
+            .set_values([
                 PlayingCardValue::Jack,
                 PlayingCardValue::Queen,
                 PlayingCardValue::King,
             ])
-            .count(2);
+            .set_count(2);
 
         assert_eq!("[J♣ Q♣ K♣ J♥ Q♥ K♥] (2x)", deck.to_string());
     }
