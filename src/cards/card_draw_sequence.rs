@@ -28,7 +28,7 @@ where
             "[{}] ({})",
             self.cards
                 .iter()
-                .map(|x| x.to_string())
+                .map(std::string::ToString::to_string)
                 .collect::<Vec<String>>()
                 .join("-"),
             self.probability
@@ -51,16 +51,19 @@ where
     /// assert_eq!(sequence.cards(), &vec![1, 2, 3]);
     /// assert_eq!(sequence.probability(), &PROBABILITY_ONE);
     /// ```
+    #[must_use]
     pub fn new(cards: Vec<C>, probability: Probability) -> Self {
         Self { cards, probability }
     }
 
     /// Returns the cards as they appear in their sequence.
+    #[must_use]
     pub fn cards(&self) -> &Vec<C> {
         &self.cards
     }
 
     /// Returns the probability of this sequence to appear.
+    #[must_use]
     pub fn probability(&self) -> &Probability {
         &self.probability
     }

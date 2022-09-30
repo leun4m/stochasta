@@ -14,17 +14,17 @@ mod c_common_traits {
     use std::fmt::{Debug, Display};
     use std::hash::Hash;
 
-    use super::*;
+    use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
     /// Checks whether the type implements:
-    /// - Clone
-    /// - Eq
-    /// - PartialEq    
-    /// - Ord
-    /// - PartialOrd
-    /// - Hash
-    /// - Debug
-    /// - Display
+    /// - `Clone`
+    /// - `Eq`
+    /// - `PartialEq`    
+    /// - `Ord`
+    /// - `PartialOrd`
+    /// - `Hash`
+    /// - `Debug`
+    /// - `Display`
     macro_rules! assert_impls_basics {
         ($input:ty) => {
             assert!(impls!($input: Clone));
@@ -73,7 +73,7 @@ mod c_common_traits {
 mod c_serde {
     use serde::{Deserialize, Serialize};
 
-    use super::*;
+    use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
     #[test]
     fn check_serialize() {
@@ -98,7 +98,8 @@ mod c_serde {
 ///
 /// [C-SEND-SYNC]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-send-sync
 mod c_send_sync {
-    use super::*;
+
+    use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
     #[test]
     fn check_send() {
