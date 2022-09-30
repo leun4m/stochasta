@@ -250,7 +250,7 @@ where
                 self.probability_in_tree,
             ));
         } else {
-            for (card, tree) in self.nodes.iter() {
+            for (card, tree) in &self.nodes {
                 let mut s = Vec::new();
                 s.extend(sequence.iter().cloned());
                 s.push(card.clone());

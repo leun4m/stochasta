@@ -44,9 +44,10 @@ impl From<Ratio<u64>> for Probability {
     ///
     /// - if ratio > 1 ⇒ value out of bounds!
     fn from(ratio: Ratio<u64>) -> Self {
-        if ratio > Ratio::from(1) {
-            panic!("ratio is not in the bounds of 0 and 1");
-        }
+        assert!(
+            ratio <= Ratio::from(1),
+            "ratio is not in the bounds of 0 and 1"
+        );
 
         Self { ratio }
     }
@@ -55,7 +56,7 @@ impl From<Ratio<u64>> for Probability {
 impl Probability {
     /// Creates a new `Probability`.
     ///
-    /// For a safer method (panic-free), please consider using: [Probability::try_new].
+    /// For a safer method (panic-free), please consider using: [`Probability::try_new`].
     ///
     /// # Panics
     ///
@@ -71,13 +72,14 @@ impl Probability {
     /// let p = Probability::new(1, 3);
     /// assert_eq!(p.ratio(), &Ratio::new(1, 3));
     /// ```
+    #[must_use]
     pub fn new(numerator: u64, denominator: u64) -> Self {
         Self::from(Ratio::new(numerator, denominator))
     }
 
     /// Tries to create a new `Probability` from the given ratio.
     ///
-    /// # Error
+    /// # Errors
     ///
     /// - ratio > 1 => value out of bounds!
     ///
@@ -102,6 +104,7 @@ impl Probability {
     }
 
     /// Returns the inner ratio
+    #[must_use]
     pub fn ratio(&self) -> &Ratio<u64> {
         &self.ratio
     }
@@ -117,6 +120,7 @@ impl Probability {
     /// let two_third = one_third.complementary();
     /// assert_eq!(two_third, Probability::new(2, 3));
     /// ```
+    #[must_use]
     pub fn complementary(&self) -> Self {
         Self {
             ratio: RATIO_ONE - self.ratio,
@@ -201,13 +205,13 @@ mod tests {
     #[test]
     #[should_panic]
     fn new_out_of_bounds() {
-        Probability::new(2, 1);
+        let _ = Probability::new(2, 1);
     }
 
     #[test]
     #[should_panic]
     fn new_zero_denominator() {
-        Probability::new(1, 0);
+        let _ = Probability::new(1, 0);
     }
 
     #[test]
