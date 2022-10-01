@@ -85,7 +85,7 @@ def update_changelog(version, date):
     with open("CHANGELOG.md", "r", encoding="utf-8") as file:
         data = file.read()
         data = data.replace("\n## Unreleased\n",
-                            f"\n## [{version}] ({date})\n")
+                            f"\n## Unreleased\n\n## [{version}] ({date})\n")
         data += f"[{version}]: https://github.com/leun4m/stochasta/releases/tag/v{version}\n"
 
     with open("CHANGELOG.md", "w", encoding="utf-8") as file:
