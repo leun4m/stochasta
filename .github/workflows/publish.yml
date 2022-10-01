@@ -9,9 +9,9 @@ env:
 
 jobs:
   test:
-    uses: leun4m/stochasta/.github/workflows/test.yml@main
+    uses: leun4m/stochasta/.github/workflows/test.yml@release
   audit:
-    uses: leun4m/stochasta/.github/workflows/audit.yml@main
+    uses: leun4m/stochasta/.github/workflows/audit.yml@release
   publish:
     needs: [test, audit]
     runs-on: ubuntu-latest
