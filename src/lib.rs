@@ -22,6 +22,9 @@
 mod cards;
 mod probability;
 
+#[cfg(feature = "playing_cards")]
+pub mod playing_cards;
+
 pub use cards::card_deck::CardDeck;
 pub use cards::card_draw_sequence::CardDrawSequence;
 pub use cards::card_draw_tree::CardDrawTree;
@@ -82,7 +85,7 @@ mod tests {
         let probability: Probability = tree
             .paths()
             .iter()
-            .filter(|seq| seq.cards().iter().all(|card| matches!(card, (_, "A"))))
+            .filter(|seq| seq.cards().iter().all(|card| matches!(card, &(_, "A"))))
             .map(|seq| seq.probability().ratio())
             .sum::<Ratio<u64>>()
             .into();
