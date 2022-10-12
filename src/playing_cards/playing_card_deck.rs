@@ -19,7 +19,7 @@ use super::{
 ///
 /// let deck = PlayingCardDeck::new()
 ///     .value_range(PlayingCardValue::Seven, PlayingCardValue::Ace)
-///     .suits_range(PlayingCardSuit::Diamonds, PlayingCardSuit::Spades)
+///     .all_suits()
 ///     .set_count(2)
 ///     .to_deck();
 /// println!("{:?}", deck);
@@ -40,7 +40,7 @@ impl PlayingCardDeck {
     /// # Example
     ///
     /// ```
-    /// use stochasta::playing_cards::{PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    /// use stochasta::playing_cards::PlayingCardDeck;
     ///
     /// let deck = PlayingCardDeck::new();
     /// assert!(deck.is_empty())
@@ -54,17 +54,46 @@ impl PlayingCardDeck {
     }
 
     /// Sets the values.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .set_values([PlayingCardValue::Ten, PlayingCardValue::Ace])
+    ///     .set_suits([PlayingCardSuit::Hearts])
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 2);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
+    /// ```
     pub fn set_values<I>(mut self, values: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardValue>,
     {
-        self.values = values;
         self.values.clear();
         self.values.extend(values);
         self
     }
 
     /// Sets the suits.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .set_values([PlayingCardValue::Ace])
+    ///     .set_suits([PlayingCardSuit::Hearts, PlayingCardSuit::Clubs])
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 2);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Clubs)));
+    /// ```
     pub fn set_suits<I>(mut self, suits: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardSuit>,
@@ -75,36 +104,110 @@ impl PlayingCardDeck {
     }
 
     /// Sets the value range. (both inclusive)
+    ///    
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .value_range(PlayingCardValue::Jack, PlayingCardValue::Ace)
+    ///     .set_suits([PlayingCardSuit::Hearts])
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 4);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Jack, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Queen, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::King, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
+    /// ```
     pub fn value_range(mut self, from: PlayingCardValue, to: PlayingCardValue) -> Self {
+        self.values.clear();
         self.values.extend(arr_from_to(&ALL_VALUES, &from, &to));
         self
     }
 
-    /// Sets the value range. (both inclusive)
-    pub fn suits_range(mut self, from: PlayingCardSuit, to: PlayingCardSuit) -> Self {
-        self.suits.extend(arr_from_to(&ALL_SUITS, &from, &to));
-        self
-    }
-
-    /// Sets all `PlayingCardValue`s inclusive.
+    /// Sets all `PlayingCardValue`s to be included.
+    /// 
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .all_values()
+    ///     .set_suits([PlayingCardSuit::Hearts])
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 13);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
+    /// ```
     pub fn all_values(mut self) -> Self {
         self.values.extend(ALL_VALUES);
         self
     }
 
     /// Sets all `PlayingCardSuit`s inclusive.
+    /// 
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .set_values([PlayingCardValue::Two])
+    ///     .all_suits()
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 4);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Diamonds)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Clubs)));
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Spades)));
+    /// ```
     pub fn all_suits(mut self) -> Self {
         self.suits.extend(ALL_SUITS);
         self
     }
 
-    /// Sets the count of cards.
+    /// Sets the count of each individual card.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .set_values([PlayingCardValue::Two])
+    ///     .set_suits([PlayingCardSuit::Hearts])
+    ///     .set_count(4)
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 4);
+    /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
+    /// ```
     pub fn set_count(mut self, count: u64) -> Self {
         self.count = count;
         self
     }
 
     /// Converts this to a [`CardDeck`](crate::CardDeck).
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// let deck = PlayingCardDeck::new()
+    ///     .all_values()
+    ///     .all_suits()
+    ///     .set_count(2)
+    ///     .to_deck();
+    /// 
+    /// assert_eq!(deck.size(), 13 * 4 * 2);
+    /// ```
     pub fn to_deck(&self) -> CardDeck<PlayingCard> {
         let mut deck = CardDeck::new();
         for value in self.values.iter() {
@@ -116,6 +219,14 @@ impl PlayingCardDeck {
     }
 
     /// Returns `true` if deck contains no cards.
+    /// 
+    /// # Example
+    ///
+    /// ```
+    /// use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
+    ///
+    /// assert!(PlayingCardDeck::new().is_empty());
+    /// ```
     pub fn is_empty(&self) -> bool {
         self.count == 0 || self.suits.is_empty() || self.values.is_empty()
     }
