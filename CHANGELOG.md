@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.8.0] (2022-10-13)
+
 ### Added
 
 - Feature: `playing_cards` (to create a classic card deck more easily)
@@ -182,3 +184,4 @@
 [0.7.0]: https://github.com/leun4m/stochasta/releases/tag/v0.7.0
 [0.7.1]: https://github.com/leun4m/stochasta/releases/tag/v0.7.1
 [0.7.2]: https://github.com/leun4m/stochasta/releases/tag/v0.7.2
+[0.8.0]: https://github.com/leun4m/stochasta/releases/tag/v0.8.0
