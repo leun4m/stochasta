@@ -1,6 +1,6 @@
 [package]
 name = "stochasta"
-version = "0.8.0"
+version = "0.8.1"
 authors = ["Manuel Krebs <me@leun4m.de>"]
 edition = "2021"
 description = "A simple stochastic analysis library"
