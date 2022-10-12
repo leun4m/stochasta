@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- activate features for documentation at https://docs.rs
+
 ## [0.8.0] (2022-10-13)
 
 ### Added
