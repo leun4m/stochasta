@@ -2,20 +2,6 @@
 
 ## Unreleased
 
-## [0.7.2] (2022-10-01)
-
-### Added
-
-- `[must_use]` flags
-  - `CardDrawSequence::new`
-  - `CardDrawSequence::cards`
-  - `CardDrawSequence::probability`
-  - `Probability::new`
-  - `Probability::ratio`
-  - `Probability::complementary`
-
-## Unreleased
-
 ### Added
 
 - Feature: `playing_cards` (to create a classic card deck more easily)
@@ -27,6 +13,18 @@
     - enum for `♦ ♣ ♥ ♠`
   - `PlayingCardValue`
     - enum for `2 3 4 5 6 7 8 9 10 J Q K A`
+
+## [0.7.2] (2022-10-01)
+
+### Added
+
+- `[must_use]` flags
+  - `CardDrawSequence::new`
+  - `CardDrawSequence::cards`
+  - `CardDrawSequence::probability`
+  - `Probability::new`
+  - `Probability::ratio`
+  - `Probability::complementary`
 
 ### Changed
 
