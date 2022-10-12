@@ -4,9 +4,6 @@
 
 use stochasta::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
-#[cfg(feature = "playing_cards")]
-use stochasta::playing_cards::{PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue};
-
 #[macro_use]
 extern crate impls;
 
@@ -18,6 +15,11 @@ mod c_common_traits {
     use std::hash::Hash;
 
     use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
+
+    #[cfg(feature = "playing_cards")]
+    use stochasta::playing_cards::{
+        PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue,
+    };
 
     /// Checks whether the type implements:
     /// - `Clone`
@@ -102,6 +104,11 @@ mod c_serde {
 
     use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
 
+    #[cfg(feature = "playing_cards")]
+    use stochasta::playing_cards::{
+        PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue,
+    };
+
     #[test]
     fn check_serialize() {
         assert!(impls!(Probability: Serialize));
@@ -143,6 +150,11 @@ mod c_serde {
 mod c_send_sync {
 
     use super::{CardDeck, CardDrawSequence, CardDrawTree, Probability, ProbabilityRatioError};
+
+    #[cfg(feature = "playing_cards")]
+    use stochasta::playing_cards::{
+        PlayingCard, PlayingCardDeck, PlayingCardSuit, PlayingCardValue,
+    };
 
     #[test]
     fn check_send() {
