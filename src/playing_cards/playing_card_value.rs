@@ -64,6 +64,7 @@ impl PlayingCardValue {
     /// assert_eq!(PlayingCardValue::Ace.is_picture(), false);
     /// assert_eq!(PlayingCardValue::Two.is_picture(), false);
     /// ```
+    #[must_use]
     pub fn is_picture(&self) -> bool {
         *self == PlayingCardValue::Jack
             || *self == PlayingCardValue::Queen
@@ -82,6 +83,7 @@ impl PlayingCardValue {
     /// assert_eq!(PlayingCardValue::King.is_number(), false);
     /// assert_eq!(PlayingCardValue::Ace.is_number(), false);
     /// ```
+    #[must_use]
     pub fn is_number(&self) -> bool {
         !self.is_picture() && !self.is_ace()
     }
@@ -98,11 +100,12 @@ impl PlayingCardValue {
     /// assert_eq!(PlayingCardValue::King.is_ace(), false);
     /// assert_eq!(PlayingCardValue::Two.is_ace(), false);
     /// ```
+    #[must_use]
     pub fn is_ace(&self) -> bool {
         *self == PlayingCardValue::Ace
     }
 
-    fn as_str(&self) -> &'static str {
+    fn as_str(self) -> &'static str {
         match self {
             PlayingCardValue::Two => "2",
             PlayingCardValue::Three => "3",

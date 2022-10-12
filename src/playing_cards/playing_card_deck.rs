@@ -45,6 +45,7 @@ impl PlayingCardDeck {
     /// let deck = PlayingCardDeck::new();
     /// assert!(deck.is_empty())
     /// ```
+    #[must_use]
     pub fn new() -> Self {
         Self {
             values: EnumSet::new(),
@@ -69,6 +70,7 @@ impl PlayingCardDeck {
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
     /// ```
+    #[must_use]
     pub fn set_values<I>(mut self, values: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardValue>,
@@ -94,6 +96,7 @@ impl PlayingCardDeck {
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Clubs)));
     /// ```
+    #[must_use]
     pub fn set_suits<I>(mut self, suits: I) -> Self
     where
         I: IntoIterator<Item = PlayingCardSuit>,
@@ -121,6 +124,7 @@ impl PlayingCardDeck {
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::King, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
     /// ```
+    #[must_use]
     pub fn value_range(mut self, from: PlayingCardValue, to: PlayingCardValue) -> Self {
         self.values.clear();
         self.values.extend(arr_from_to(&ALL_VALUES, &from, &to));
@@ -144,6 +148,7 @@ impl PlayingCardDeck {
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
     /// ```
+    #[must_use]
     pub fn all_values(mut self) -> Self {
         self.values.extend(ALL_VALUES);
         self
@@ -167,6 +172,7 @@ impl PlayingCardDeck {
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Clubs)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Spades)));
     /// ```
+    #[must_use]
     pub fn all_suits(mut self) -> Self {
         self.suits.extend(ALL_SUITS);
         self
@@ -188,6 +194,7 @@ impl PlayingCardDeck {
     /// assert_eq!(deck.size(), 4);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
     /// ```
+    #[must_use]
     pub fn set_count(mut self, count: u64) -> Self {
         self.count = count;
         self
@@ -208,6 +215,7 @@ impl PlayingCardDeck {
     ///
     /// assert_eq!(deck.size(), 13 * 4 * 2);
     /// ```
+    #[must_use]
     pub fn to_deck(&self) -> CardDeck<PlayingCard> {
         let mut deck = CardDeck::new();
         for value in self.values.iter() {
@@ -227,6 +235,7 @@ impl PlayingCardDeck {
     ///
     /// assert!(PlayingCardDeck::new().is_empty());
     /// ```
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.count == 0 || self.suits.is_empty() || self.values.is_empty()
     }

@@ -85,7 +85,7 @@ mod tests {
         let probability: Probability = tree
             .paths()
             .iter()
-            .filter(|seq| seq.cards().iter().all(|card| matches!(card, (_, "A"))))
+            .filter(|seq| seq.cards().iter().all(|card| matches!(card, &(_, "A"))))
             .map(|seq| seq.probability().ratio())
             .sum::<Ratio<u64>>()
             .into();

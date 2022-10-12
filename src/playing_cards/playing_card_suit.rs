@@ -55,7 +55,7 @@ impl PlayingCardSuit {
         !self.is_red()
     }
 
-    fn as_char(&self) -> char {
+    fn as_char(self) -> char {
         match self {
             PlayingCardSuit::Diamonds => '♦',
             PlayingCardSuit::Clubs => '♣',
