@@ -19,7 +19,7 @@ include = [
 ]
 
 [package.metadata.docs.rs]
-features = ["playing_cards", "serde"]
+all-features = true
 
 [dependencies]
 itertools = "0.10"
