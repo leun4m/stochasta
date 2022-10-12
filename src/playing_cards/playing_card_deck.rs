@@ -64,7 +64,7 @@ impl PlayingCardDeck {
     ///     .set_values([PlayingCardValue::Ten, PlayingCardValue::Ace])
     ///     .set_suits([PlayingCardSuit::Hearts])
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 2);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
@@ -89,7 +89,7 @@ impl PlayingCardDeck {
     ///     .set_values([PlayingCardValue::Ace])
     ///     .set_suits([PlayingCardSuit::Hearts, PlayingCardSuit::Clubs])
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 2);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ace, PlayingCardSuit::Clubs)));
@@ -114,7 +114,7 @@ impl PlayingCardDeck {
     ///     .value_range(PlayingCardValue::Jack, PlayingCardValue::Ace)
     ///     .set_suits([PlayingCardSuit::Hearts])
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 4);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Jack, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Queen, PlayingCardSuit::Hearts)));
@@ -128,7 +128,7 @@ impl PlayingCardDeck {
     }
 
     /// Sets all `PlayingCardValue`s to be included.
-    /// 
+    ///
     /// # Example
     ///
     /// ```
@@ -138,7 +138,7 @@ impl PlayingCardDeck {
     ///     .all_values()
     ///     .set_suits([PlayingCardSuit::Hearts])
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 13);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Ten, PlayingCardSuit::Hearts)));
@@ -150,7 +150,7 @@ impl PlayingCardDeck {
     }
 
     /// Sets all `PlayingCardSuit`s inclusive.
-    /// 
+    ///
     /// # Example
     ///
     /// ```
@@ -160,7 +160,7 @@ impl PlayingCardDeck {
     ///     .set_values([PlayingCardValue::Two])
     ///     .all_suits()
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 4);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Diamonds)));
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
@@ -184,7 +184,7 @@ impl PlayingCardDeck {
     ///     .set_suits([PlayingCardSuit::Hearts])
     ///     .set_count(4)
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 4);
     /// assert!(deck.contains(&PlayingCard::new(PlayingCardValue::Two, PlayingCardSuit::Hearts)));
     /// ```
@@ -205,7 +205,7 @@ impl PlayingCardDeck {
     ///     .all_suits()
     ///     .set_count(2)
     ///     .to_deck();
-    /// 
+    ///
     /// assert_eq!(deck.size(), 13 * 4 * 2);
     /// ```
     pub fn to_deck(&self) -> CardDeck<PlayingCard> {
@@ -219,7 +219,7 @@ impl PlayingCardDeck {
     }
 
     /// Returns `true` if deck contains no cards.
-    /// 
+    ///
     /// # Example
     ///
     /// ```
