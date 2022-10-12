@@ -9,7 +9,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTFLAGS: "-Dwarnings -Dclippy::pedantic -Aclippy::module-name-repetitions"
+  RUSTFLAGS: "-Dwarnings"
 
 jobs:
   test:
