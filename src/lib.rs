@@ -18,6 +18,12 @@
 //! [examples]: https://github.com/leun4m/stochasta/tree/develop/examples
 
 #![deny(missing_docs, unused_imports)]
+#![deny(clippy::pedantic)]
+#![allow(
+    clippy::implicit_return,
+    clippy::module_name_repetitions,
+    clippy::non_ascii_literal
+)]
 
 mod cards;
 mod probability;
