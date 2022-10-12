@@ -14,6 +14,11 @@
   - `PlayingCardValue`
     - enum for `2 3 4 5 6 7 8 9 10 J Q K A`
 
+### Changed
+
+- `CardDrawTree`
+  - `to_graphviz` works with space-containing roots
+
 ## [0.7.2] (2022-10-01)
 
 ### Added
@@ -25,11 +30,6 @@
   - `Probability::new`
   - `Probability::ratio`
   - `Probability::complementary`
-
-### Changed
-
-- `CardDrawTree`
-  - `to_graphviz` works with space-containing roots
 
 ## [0.7.1] (2022-09-14)
 
