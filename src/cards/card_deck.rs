@@ -45,7 +45,7 @@ where
             "{}",
             self.cards
                 .iter()
-                .map(|(k, v)| format!("{}: {}x", k, v))
+                .map(|(k, v)| format!("{k}: {v}x"))
                 .collect::<Vec<String>>()
                 .join("\n")
         )

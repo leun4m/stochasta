@@ -49,7 +49,7 @@ where
                     x.1.probability_in_tree,
                     x.1.to_string()
                         .lines()
-                        .map(|x| format!("\t{}", x))
+                        .map(|x| format!("\t{x}"))
                         .collect::<Vec<String>>()
                         .join("\n")
                 ))
@@ -345,7 +345,7 @@ where
 
     fn to_graphviz_sub(&self, root: &str, card: &str, id: u32) -> (String, u32) {
         let mut result = String::new();
-        let new_root = format!("{}_{}", card, id);
+        let new_root = format!("{card}_{id}");
 
         write!(
             result,
