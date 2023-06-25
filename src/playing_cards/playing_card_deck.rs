@@ -254,7 +254,7 @@ impl Display for PlayingCardDeck {
             "[{}] ({}x)",
             self.suits
                 .iter()
-                .map(|s| self.values.iter().map(|v| format!("{}{}", v, s)).join(" "))
+                .map(|s| self.values.iter().map(|v| format!("{v}{s}")).join(" "))
                 .join(" "),
             self.count
         )

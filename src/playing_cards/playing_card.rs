@@ -77,6 +77,6 @@ mod tests {
     #[test]
     fn display_check() {
         let king_hearts = PlayingCard::new(PlayingCardValue::King, PlayingCardSuit::Hearts);
-        assert_eq!(format!("{}", king_hearts), "K♥");
+        assert_eq!(format!("{king_hearts}"), "K♥");
     }
 }
