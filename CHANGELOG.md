@@ -201,3 +201,4 @@
 [0.7.2]: https://github.com/leun4m/stochasta/releases/tag/v0.7.2
 [0.8.0]: https://github.com/leun4m/stochasta/releases/tag/v0.8.0
 [0.8.1]: https://github.com/leun4m/stochasta/releases/tag/v0.8.1
+[0.8.2]: https://github.com/leun4m/stochasta/releases/tag/v0.8.2
