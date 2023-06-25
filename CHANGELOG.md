@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## [0.8.2] (2023-06-26)
+
+### Changed
+
+- Update dependency version of
+  - `itertools` from 0.10 to 0.11
+  - `enumset` from 1.0 to 1.1
+- Apply clippy suggestions for more idiomatic rust code
+
 ## [0.8.1] (2022-10-13)
 
 ### Changed
