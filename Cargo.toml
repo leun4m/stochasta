@@ -22,7 +22,7 @@ include = [
 all-features = true
 
 [dependencies]
-itertools = "0.11"
+itertools = "0.12"
 
 [dependencies.num-rational]
 version = "0.4"
