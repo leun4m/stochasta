@@ -483,7 +483,7 @@ _42_3[label="42 (1/2)"];
         let deck = CardDeck::from(vec![1, 2, 3]);
         let tree = CardDrawTree::shrinking(&deck, 3);
         assert_eq!(
-            r#"* 1 (1/3)
+            r"* 1 (1/3)
 	* 2 (1/6)
 		* 3 (1/6)
 	* 3 (1/6)
@@ -497,7 +497,7 @@ _42_3[label="42 (1/2)"];
 	* 1 (1/6)
 		* 2 (1/6)
 	* 2 (1/6)
-		* 1 (1/6)"#,
+		* 1 (1/6)",
             tree.to_string()
         );
     }

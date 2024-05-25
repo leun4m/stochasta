@@ -203,13 +203,13 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "ratio is not in the bounds of 0 and 1")]
     fn new_out_of_bounds() {
         let _ = Probability::new(2, 1);
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "denominator == 0")]
     fn new_zero_denominator() {
         let _ = Probability::new(1, 0);
     }
@@ -231,13 +231,13 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "ratio is not in the bounds of 0 and 1")]
     fn from_ratio_out_of_bounds() {
         let _ = Probability::from(Ratio::new(2, 1));
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "denominator == 0")]
     fn from_ratio_zero_denominator() {
         let _ = Probability::from(Ratio::new(1, 0));
     }
