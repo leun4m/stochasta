@@ -1,6 +1,6 @@
 [package]
 name = "stochasta"
-version = "0.8.2"
+version = "0.8.3"
 authors = ["Manuel Krebs <me@leun4m.de>"]
 edition = "2021"
 description = "A simple stochastic analysis library"
@@ -10,13 +10,7 @@ documentation = "https://docs.rs/stochasta"
 license = "MIT OR Apache-2.0"
 keywords = ["stochastic", "probability"]
 categories = ["mathematics"]
-include = [
-    "Cargo.toml",
-    "LICENSE-*",
-    "README.md",
-    "CHANGELOG.md",
-    "/src",
-]
+include = ["Cargo.toml", "LICENSE-*", "README.md", "CHANGELOG.md", "/src"]
 
 [package.metadata.docs.rs]
 all-features = true

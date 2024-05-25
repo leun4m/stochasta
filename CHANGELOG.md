@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## [0.8.3] (2024-05-26)
+
+#### Changed
+
+- Update dependency version of
+  - `itertools` from 0.11 to 0.13
+
 ## [0.8.2] (2023-06-26)
 
 ### Changed
@@ -202,3 +209,4 @@
 [0.8.0]: https://github.com/leun4m/stochasta/releases/tag/v0.8.0
 [0.8.1]: https://github.com/leun4m/stochasta/releases/tag/v0.8.1
 [0.8.2]: https://github.com/leun4m/stochasta/releases/tag/v0.8.2
+[0.8.3]: https://github.com/leun4m/stochasta/releases/tag/v0.8.3
