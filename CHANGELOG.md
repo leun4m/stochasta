@@ -4,6 +4,8 @@
 
 ## [0.8.3] (2024-05-26)
 
+## [0.8.3] (2024-05-26)
+
 #### Changed
 
 - Update dependency version of
@@ -209,4 +211,5 @@
 [0.8.0]: https://github.com/leun4m/stochasta/releases/tag/v0.8.0
 [0.8.1]: https://github.com/leun4m/stochasta/releases/tag/v0.8.1
 [0.8.2]: https://github.com/leun4m/stochasta/releases/tag/v0.8.2
+[0.8.3]: https://github.com/leun4m/stochasta/releases/tag/v0.8.3
 [0.8.3]: https://github.com/leun4m/stochasta/releases/tag/v0.8.3
