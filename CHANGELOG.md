@@ -4,7 +4,7 @@
 
 ## [0.8.3] (2024-05-26)
 
-#### Changed
+### Changed
 
 - Update dependency version of
   - `itertools` from 0.11 to 0.13
